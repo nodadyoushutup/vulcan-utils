@@ -4,7 +4,7 @@ from datetime import datetime, date, time
 from decimal import Decimal
 from enum import Enum
 import uuid
-from medusa_logger.encoder import Encoder
+from vulcan_logger.encoder import Encoder
 
 
 class MockEnum(Enum):
