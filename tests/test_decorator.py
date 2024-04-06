@@ -56,7 +56,6 @@ def test_log_decorator_condition_false() -> None:
     with patch('medusa_logger.decorator.Logger') as mock_logger:
         decorated = log(_sample_function, condition=False)
         result = decorated(1, y=3)
-
         assert result == 4
         mock_logger.return_value.debug.assert_not_called()
 
