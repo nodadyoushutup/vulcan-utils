@@ -6,5 +6,6 @@
   "baseBranches": ["main"],
   "branchPrefix": "[DEP] ",
   "commitMessagePrefix": "[DEP] ",
-  "assignees": ["nodadyoushutup"]
+  "assignees": ["nodadyoushutup"],
+  "reviewers": ["nodadyoushutup"]
 }
