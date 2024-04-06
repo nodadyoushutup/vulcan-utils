@@ -8,8 +8,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
