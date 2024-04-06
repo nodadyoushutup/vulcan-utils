@@ -3,10 +3,22 @@ import os
 import pytest
 from medusa_logger.logger import Logger
 
-# Helper function to simulate logging calls within a specific file for _stack_trace
 
+def _simulate_logging_call(file_name: str, line_no: int, func: callable, message: str) -> None:
+    """
+    Simulates a logging call with specified file name and line number information.
 
-def simulate_logging_call(file_name, line_no, func, message):
+    This helper function is designed to mock the behavior of a logging call while
+    allowing the specification of the file name and line number from which the log
+    would appear to have been called.
+
+    Args:
+        file_name: The name of the file to appear as the source of the log message.
+        line_no: The line number to appear as the source of the log message.
+        func: The logging function to be called.
+        message: The log message to be passed to the logging function.
+    """
+
     with patch('inspect.stack') as mock_stack:
         mock_frame = Mock()
         mock_frame.filename = file_name
@@ -15,24 +27,50 @@ def simulate_logging_call(file_name, line_no, func, message):
         func(message)
 
 
-def test_logger_initialization():
+def test_logger_initialization() -> None:
+    """
+    Tests the initialization process of the Logger class.
+
+    Verifies that the `coloredlogs.install` method is called exactly once during
+    the initialization of a Logger instance, ensuring that the logger setup process
+    is executed properly.
+    """
+
     with patch('medusa_logger.logger.coloredlogs.install') as mock_install:
         Logger('test_logger', 'INFO')
         mock_install.assert_called_once()
 
 
 @pytest.mark.parametrize("method_name", ['debug', 'info', 'warning', 'critical', 'error'])
-def test_logging_methods(method_name):
+def test_logging_methods(method_name: str) -> None:
+    """
+    Tests the logging methods of the Logger class.
+
+    This test ensures that each logging method (debug, info, warning, critical, error)
+    correctly logs a message with the expected file name and line number information.
+
+    Args:
+        method_name: The name of the Logger method to test.
+    """
+
     logger = Logger('test_logger')
     with patch.object(logger.logger, method_name) as mock_log_method:
-        simulate_logging_call("test_file.py", 123, getattr(
+        _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
         assert "test_file.py" in mock_log_method.call_args[1]['extra']['caller_filename']
         assert mock_log_method.call_args[1]['extra']['caller_lineno'] == 123
 
 
-def test_log_level_from_env():
+def test_log_level_from_env() -> None:
+    """
+    Tests that the Logger respects the log level specified by an environment variable.
+
+    Sets the 'MD_LOG_LEVEL' environment variable to 'WARNING' and verifies that the
+    Logger instance initializes with the log level correctly set to 'WARNING', as indicated
+    by the arguments passed to `coloredlogs.install`.
+    """
+
     os.environ['MD_LOG_LEVEL'] = 'WARNING'
     with patch('medusa_logger.logger.coloredlogs.install') as mock_install:
         Logger('test_logger')
