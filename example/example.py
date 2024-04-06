@@ -1,15 +1,9 @@
 # example/example.py
-import sys
 import os
-# Manual sys path update for package imports, so this file can be used
-# without PIP installing the package.
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-try:
-    from medusa_logger.logger import Logger
-    from medusa_logger.decorator import log
-except:
-    sys.exit(1)
+
+from medusa_logger.logger import Logger
+from medusa_logger.decorator import log
+
 
 os.environ["MD_LOG_LEVEL"] = "DEBUG"  # Global log level filter
 
