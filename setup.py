@@ -5,7 +5,7 @@ with open("docs/README.md", "r") as f:
 
 setup(
     name="vulcan-logger",
-    version="1.3.8",
+    version="1.3.9",
     description="A logging utility package with colored logs.",
     packages=find_packages(),
     install_requires=[
