@@ -9,7 +9,7 @@ Modules
    vulcan_logger
 
 Unit Tests
-=======
+==========
 
 .. toctree::
    :maxdepth: 2
