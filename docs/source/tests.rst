@@ -14,3 +14,11 @@ tests.test_encoder
    :members:
    :undoc-members:
    :show-inheritance:
+
+
+tests.test_logger
+====================
+.. automodule:: tests.test_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
