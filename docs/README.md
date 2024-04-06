@@ -19,6 +19,8 @@ pip install medusa-logger
 ```
 
 ## Usage
+[Please check out example usage here](https://github.com/nodadyoushutup/medusa-logger/blob/main/example/example.py)
+
 ### Basic Logging
 1. Import the Logger class from the medusa_logger.logger module.
 2. Initialize a Logger instance with a name and an optional log level. The default log level is INFO.
