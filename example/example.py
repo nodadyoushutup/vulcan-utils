@@ -13,7 +13,7 @@ except:
 
 os.environ["MD_LOG_LEVEL"] = "DEBUG"  # Global log level filter
 
-# Functions defined with a @log decorator. Level or Condition may be
+# Functions defined with a log decorator. Level or Condition may be
 # passed as arguments on the decorator, or omitted.
 
 
