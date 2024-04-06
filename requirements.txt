@@ -39,6 +39,7 @@ requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.7.1
 SecretStorage==3.3.3
+setuptools==59.6.0
 snowballstemmer==2.2.0
 Sphinx==7.2.6
 sphinx-rtd-theme==2.0.0
@@ -52,4 +53,5 @@ sphinxcontrib-serializinghtml==1.1.10
 tomli==2.0.1
 twine==5.0.0
 urllib3==2.2.1
+wheel==0.43.0
 zipp==3.18.1

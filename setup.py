@@ -5,7 +5,7 @@ with open("docs/README.md", "r") as f:
 
 setup(
     name="medusa-logger",
-    version="1.2.0",
+    version="1.3.0",
     description="A logging utility package with colored logs.",
     packages=find_packages(),
     install_requires=[
