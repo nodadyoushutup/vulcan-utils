@@ -29,5 +29,6 @@ jobs:
         pip install setuptools wheel twine # Install additional build dependencies if needed
     - name: Build and check the package
       run: |
+        export TWINE_PASSWORD=${{secrets.PYPI_API_TOKEN}}
         python setup.py sdist bdist_wheel
         twine upload dist/*
