@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "baseBranches": ["main"],
+  "baseBranches": ["staging"],
   "branchPrefix": "[DEP] ",
   "commitMessagePrefix": "[DEP] ",
   "assignees": ["nodadyoushutup"],
