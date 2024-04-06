@@ -3,11 +3,11 @@ import pytest
 from medusa_logger.decorator import log
 
 
-def sample_function(x, y=2):
+def _sample_function(x, y=2):
     return x + y
 
 
-def slow_function(delay):
+def _slow_function(delay):
     import time
     time.sleep(delay)
     return delay
@@ -23,7 +23,7 @@ def test_log_decorator_execution_time(delay: float) -> None:
     """
 
     with patch('medusa_logger.decorator.Logger') as mock_logger:
-        decorated = log(slow_function)
+        decorated = log(_slow_function)
         decorated(delay)
         last_call_args = mock_logger.return_value.debug.call_args_list[-1][0][0]
         assert "milliseconds" in last_call_args
@@ -39,7 +39,7 @@ def test_log_decorator_basic() -> None:
     """
 
     with patch('medusa_logger.decorator.Logger') as mock_logger:
-        decorated = log(sample_function)
+        decorated = log(_sample_function)
         result = decorated(1, y=3)
         assert result == 4
         assert mock_logger.return_value.debug.call_count == 3
@@ -54,7 +54,7 @@ def test_log_decorator_condition_false() -> None:
     """
 
     with patch('medusa_logger.decorator.Logger') as mock_logger:
-        decorated = log(sample_function, condition=False)
+        decorated = log(_sample_function, condition=False)
         result = decorated(1, y=3)
 
         assert result == 4
@@ -71,6 +71,6 @@ def test_log_decorator_log_level() -> None:
     """
 
     with patch('medusa_logger.decorator.Logger') as mock_logger:
-        decorated = log(sample_function, level="INFO")
+        decorated = log(_sample_function, level="INFO")
         decorated(1, 2)
         assert mock_logger.return_value.info.call_count == 3
