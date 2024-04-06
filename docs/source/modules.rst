@@ -6,7 +6,7 @@ Modules
 .. toctree::
    :maxdepth: 2
 
-   medusa_logger
+   vulcan_logger
 
 Unit Tests
 =======

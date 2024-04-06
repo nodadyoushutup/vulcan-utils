@@ -1,9 +1,9 @@
-# Medusa Logger
-Medusa Logger is a Python package that provides a customizable logging utility with support for automatic inclusion of caller's filename and line number in logs. It aims to simplify logging in Python applications by offering features such as log level configuration, colored logs, and conditional logging.
+# Vulcan Logger
+Vulcan Logger is a Python package that provides a customizable logging utility with support for automatic inclusion of caller's filename and line number in logs. It aims to simplify logging in Python applications by offering features such as log level configuration, colored logs, and conditional logging.
 
-[View the full documentation here](https://medusa-logger.readthedocs.io/en/latest/)
+[View the full documentation here](https://vulcan-logger.readthedocs.io/en/latest/)
 
-![Medusa Logger](https://raw.githubusercontent.com/nodadyoushutup/medusa-logger/main/docs/img/examples.png)
+![Vulcan Logger](https://raw.githubusercontent.com/nodadyoushutup/vulcan-logger/main/docs/img/examples.png)
 
 ## Features
 - **Caller Information**: Automatically includes the caller's filename and line number in log messages for better traceability.
@@ -12,21 +12,21 @@ Medusa Logger is a Python package that provides a customizable logging utility w
 - **Conditional Logging**: Conditionally log messages based on specific conditions to control verbosity.
 
 ## Installation
-You can install Medusa Logger via pip:
+You can install Vulcan Logger via pip:
 
 ```bash
-pip install medusa-logger
+pip install vulcan-logger
 ```
 
 ## Usage
-[Please check out example usage here](https://github.com/nodadyoushutup/medusa-logger/blob/main/example/example.py)
+[Please check out example usage here](https://github.com/nodadyoushutup/vulcan-logger/blob/main/example/example.py)
 
 ### Basic Logging
-1. Import the Logger class from the medusa_logger.logger module.
+1. Import the Logger class from the vulcan_logger.logger module.
 2. Initialize a Logger instance with a name and an optional log level. The default log level is INFO.
 3. Use the logging methods (debug, info, warning, error, critical) to log messages at various severity levels.
 ```python
-from medusa_logger.logger import Logger
+from vulcan_logger.logger import Logger
 
 # Initialize the logger with a custom name and log level
 logger = Logger(name='application_log', level='DEBUG')
@@ -40,12 +40,12 @@ logger.critical("Critical message for severe conditions")
 ```
 
 ### Function Logging with Decorators
-Medusa Logger provides a logging decorator that can be applied to functions to automatically log calls, returns, and execution times. To use this feature:
+Vulcan Logger provides a logging decorator that can be applied to functions to automatically log calls, returns, and execution times. To use this feature:
 
-1. Import the log decorator from the medusa_logger.decorator module.
+1. Import the log decorator from the vulcan_logger.decorator module.
 2. Apply the @log decorator to any function. You can optionally specify a log level or a condition for logging.
 ```python
-from medusa_logger.decorator import log
+from vulcan_logger.decorator import log
 
 @log(level="DEBUG")
 def compute_sum(a, b):
@@ -76,7 +76,7 @@ export MD_LOG_LEVEL="WARNING"
 ```
 
 ### Handling Exceptions
-Medusa Logger makes it easy to log exceptions. Use the logging methods within exception handling blocks to log errors and critical issues.
+Vulcan Logger makes it easy to log exceptions. Use the logging methods within exception handling blocks to log errors and critical issues.
 
 ```python
 try:
@@ -87,14 +87,14 @@ except ZeroDivisionError as e:
 ```
 
 ## Contributing
-Contributions to Medusa Logger are welcome! To contribute, follow these steps:
+Contributions to Vulcan Logger are welcome! To contribute, follow these steps:
 
 1. Fork the repository and clone it to your local machine.
 2. Install the development dependencies by running `pip install -r requirements.txt`.
 3. Make your changes and ensure tests pass by running `pytest`.
 4. Submit a pull request with a clear description of your changes and why they are beneficial.
 
-Please adhere to the [code of conduct](https://github.com/jacobfholland/medusa-logger/blob/main/docs/CODE_OF_CONDUCT.md) when contributing to this project.
+Please adhere to the [code of conduct](https://github.com/jacobfholland/vulcan-logger/blob/main/docs/CODE_OF_CONDUCT.md) when contributing to this project.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/jacobfholland/medusa-logger/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/jacobfholland/vulcan-logger/blob/main/LICENSE) file for details.

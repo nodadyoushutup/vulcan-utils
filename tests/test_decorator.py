@@ -1,6 +1,6 @@
 from unittest.mock import patch
 import pytest
-from medusa_logger.decorator import log
+from vulcan_logger.decorator import log
 
 
 def _sample_function(x, y=2):
@@ -22,7 +22,7 @@ def test_log_decorator_execution_time(delay: float) -> None:
         delay (float): A float representing the delay (in seconds) to simulate in the function.
     """
 
-    with patch('medusa_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_logger.decorator.Logger') as mock_logger:
         decorated = log(_slow_function)
         decorated(delay)
         last_call_args = mock_logger.return_value.debug.call_args_list[-1][0][0]
@@ -38,7 +38,7 @@ def test_log_decorator_basic() -> None:
     return, and execution time logging).
     """
 
-    with patch('medusa_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_logger.decorator.Logger') as mock_logger:
         decorated = log(_sample_function)
         result = decorated(1, y=3)
         assert result == 4
@@ -53,7 +53,7 @@ def test_log_decorator_condition_false() -> None:
     to False, the decorated function executes normally but logging does not occur.
     """
 
-    with patch('medusa_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_logger.decorator.Logger') as mock_logger:
         decorated = log(_sample_function, condition=False)
         result = decorated(1, y=3)
         assert result == 4
@@ -69,7 +69,7 @@ def test_log_decorator_log_level() -> None:
     default debug method.
     """
 
-    with patch('medusa_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_logger.decorator.Logger') as mock_logger:
         decorated = log(_sample_function, level="INFO")
         decorated(1, 2)
         assert mock_logger.return_value.info.call_count == 3

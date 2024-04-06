@@ -1,8 +1,8 @@
 # example/example.py
 import os
 
-from medusa_logger.logger import Logger
-from medusa_logger.decorator import log
+from vulcan_logger.logger import Logger
+from vulcan_logger.decorator import log
 
 
 os.environ["MD_LOG_LEVEL"] = "DEBUG"  # Global log level filter
