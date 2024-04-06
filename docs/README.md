@@ -3,7 +3,7 @@ Medusa Logger is a Python package that provides a customizable logging utility w
 
 [View the full documentation here](https://medusa-logger.readthedocs.io/en/latest/)
 
-![Medusa Logger](img/examples.png)
+![Medusa Logger](https://raw.githubusercontent.com/nodadyoushutup/medusa-logger/main/docs/img/examples.png)
 
 ## Features
 - **Caller Information**: Automatically includes the caller's filename and line number in log messages for better traceability.
