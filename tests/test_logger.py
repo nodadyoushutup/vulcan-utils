@@ -41,13 +41,82 @@ def test_logger_initialization() -> None:
         mock_install.assert_called_once()
 
 
-@pytest.mark.parametrize("method_name", ['debug', 'info', 'warning', 'critical', 'error'])
-def test_logging_methods(method_name: str) -> None:
+@pytest.mark.parametrize("method_name", ['debug'])
+def test_debug(method_name: str) -> None:
     """
-    Tests the logging methods of the Logger class.
+    Tests the debug logging method of the Logger class.
 
-    This test ensures that each logging method (debug, info, warning, critical, error)
-    correctly logs a message with the expected file name and line number information.
+    Args:
+        method_name: The name of the Logger method to test.
+    """
+
+    logger = Logger('test_logger')
+    with patch.object(logger.logger, method_name) as mock_log_method:
+        _simulate_logging_call("test_file.py", 123, getattr(
+            logger, method_name), "Test message")
+        mock_log_method.assert_called_once()
+        assert "test_file.py" in mock_log_method.call_args[1]['extra']['caller_filename']
+        assert mock_log_method.call_args[1]['extra']['caller_lineno'] == 123
+
+
+@pytest.mark.parametrize("method_name", ['info'])
+def test_info(method_name: str) -> None:
+    """
+    Tests the info logging method of the Logger class.
+
+    Args:
+        method_name: The name of the Logger method to test.
+    """
+
+    logger = Logger('test_logger')
+    with patch.object(logger.logger, method_name) as mock_log_method:
+        _simulate_logging_call("test_file.py", 123, getattr(
+            logger, method_name), "Test message")
+        mock_log_method.assert_called_once()
+        assert "test_file.py" in mock_log_method.call_args[1]['extra']['caller_filename']
+        assert mock_log_method.call_args[1]['extra']['caller_lineno'] == 123
+
+
+@pytest.mark.parametrize("method_name", ['warning'])
+def test_warning(method_name: str) -> None:
+    """
+    Tests the warning logging method of the Logger class.
+
+    Args:
+        method_name: The name of the Logger method to test.
+    """
+
+    logger = Logger('test_logger')
+    with patch.object(logger.logger, method_name) as mock_log_method:
+        _simulate_logging_call("test_file.py", 123, getattr(
+            logger, method_name), "Test message")
+        mock_log_method.assert_called_once()
+        assert "test_file.py" in mock_log_method.call_args[1]['extra']['caller_filename']
+        assert mock_log_method.call_args[1]['extra']['caller_lineno'] == 123
+
+
+@pytest.mark.parametrize("method_name", ['critical'])
+def test_critical(method_name: str) -> None:
+    """
+    Tests the critical logging method of the Logger class.
+
+    Args:
+        method_name: The name of the Logger method to test.
+    """
+
+    logger = Logger('test_logger')
+    with patch.object(logger.logger, method_name) as mock_log_method:
+        _simulate_logging_call("test_file.py", 123, getattr(
+            logger, method_name), "Test message")
+        mock_log_method.assert_called_once()
+        assert "test_file.py" in mock_log_method.call_args[1]['extra']['caller_filename']
+        assert mock_log_method.call_args[1]['extra']['caller_lineno'] == 123
+
+
+@pytest.mark.parametrize("method_name", ['error'])
+def test_error(method_name: str) -> None:
+    """
+    Tests the errorlogging method of the Logger class.
 
     Args:
         method_name: The name of the Logger method to test.
