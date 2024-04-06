@@ -4,8 +4,8 @@ with open("docs/README.md", "r") as f:
     description = f.read()
 
 setup(
-    name="medusa-logger",
-    version="1.3.1",
+    name="vulcan-logger",
+    version="1.3.3",
     description="A logging utility package with colored logs.",
     packages=find_packages(),
     install_requires=[
