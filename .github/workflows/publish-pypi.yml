@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools wheel # Install additional build dependencies if needed
+        pip install setuptools wheel twine # Install additional build dependencies if needed
     - name: Build and check the package
       run: |
         python setup.py sdist bdist_wheel
