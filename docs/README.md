@@ -63,16 +63,16 @@ product_result = conditional_log_example(5, 3)
 ```
 
 ### Advanced Configuration
-**Setting Global Log Level**: You can set a global log level by modifying the environment variable `MD_LOG_LEVEL` before initializing your logger. This can be done within your script or externally through your system's environment settings. By default it is set to `DEBUG`.
+**Setting Global Log Level**: You can set a global log level by modifying the environment variable `VULCAN_LOG_LEVEL` before initializing your logger. This can be done within your script or externally through your system's environment settings. By default it is set to `DEBUG`.
 
 Python
 ```python
 import os
-os.environ["MD_LOG_LEVEL"] = "WARNING"
+os.environ["VULCAN_LOG_LEVEL"] = "WARNING"
 ```
 Bash
 ```bash
-export MD_LOG_LEVEL="WARNING"
+export VULCAN_LOG_LEVEL="WARNING"
 ```
 
 ### Handling Exceptions

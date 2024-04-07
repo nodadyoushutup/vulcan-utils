@@ -13,10 +13,13 @@ EXCLUDE = (
     '<frozen importlib._bootstrap>'
 )
 
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s - (%(caller_filename)s:%(caller_lineno)d)"
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 class Logger:
     """
-    A customizable logger class that supports automatic inclusion of caller's filename and line 
+    A customizable logger class that supports automatic inclusion of caller's filename and line
     number in logs. The logger can be configured with different log levels and conditionally.
 
     Attributes:
@@ -40,19 +43,58 @@ class Logger:
         self.level = level.upper()
         self._setup()
 
+    def _install_coloredlogs(self):
+        try:
+            coloredlogs.install(
+                level=os.environ.get("VULCAN_LOG_LEVEL", self.level).upper(),
+                logger=self.logger,
+                fmt=LOG_FORMAT,
+                datefmt=DATE_FORMAT
+            )
+        except Exception as e:
+            self._internal_error(f"Error installing coloredlogs", e)
+
+    def _file_name(self):
+        return f"{os.environ.get('VULCAN_LOG_NAME', 'vulcan')}.log"
+
+    def _make_dir(self, log_path):
+        try:
+            if not os.path.isdir(log_path):
+                os.makedirs(log_path, exist_ok=True)
+        except Exception as e:
+            self._internal_error(f"Error creating the log directory", e)
+
+    def _file_handler(self, log_path):
+        try:
+            log_path = os.path.join(log_path, self._file_name())
+            file_handler = logging.FileHandler(log_path)
+            file_handler.setLevel(os.environ.get(
+                "VULCAN_LOG_LEVEL", self.level).upper()
+            )
+            formatter = logging.Formatter(
+                fmt=LOG_FORMAT,
+                datefmt=DATE_FORMAT
+            )
+            file_handler.setFormatter(formatter)
+            self.logger.addHandler(file_handler)
+        except Exception as e:
+            self._internal_error(f"Error creating log file handler", e)
+
     def _setup(self) -> None:
         """
-        Sets up the logging format, date format, and installs colored logs.
+        Sets up the logging format, date format, installs colored logs, and configures file logging if VULCAN_LOG_PATH is set.
         """
 
-        log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s - (%(caller_filename)s:%(caller_lineno)d)"
-        date_format = "%Y-%m-%d %H:%M:%S"
-        coloredlogs.install(
-            level=os.environ.get("MD_LOG_LEVEL", self.level).upper(),
-            logger=self.logger,
-            fmt=log_format,
-            datefmt=date_format
-        )
+        self._install_coloredlogs()
+        log_path = os.environ.get("log_path")
+        if log_path:
+            try:
+                self._make_dir(log_path)
+                self._file_handler(log_path)
+            except Exception as e:
+                self._internal_error(f"Error setting up file handler for logger", e)
+
+    
 
     def _stack_trace(self) -> dict:
         """
@@ -136,3 +178,16 @@ class Logger:
         """
 
         self._base(self.logger.error, message, exc_info=True)
+
+    def _internal_error(self, message: str, exc: Exception) -> None:
+        """
+        Directly logs an error message for internal logger errors, avoiding recursion.
+
+        Args:
+            message: The context message for the error.
+            exc: The exception object caught.
+        """
+        # Directly print the error message and exception to stderr.
+        # This bypasses the logger's handlers to prevent recursion and ensures visibility.
+        final_message = f"Internal Logger Error: {message} | Exception: {exc}"
+        print(final_message)

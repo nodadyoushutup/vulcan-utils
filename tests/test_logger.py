@@ -135,12 +135,12 @@ def test_log_level_from_env() -> None:
     """
     Tests that the Logger respects the log level specified by an environment variable.
 
-    Sets the 'MD_LOG_LEVEL' environment variable to 'WARNING' and verifies that the
+    Sets the 'VULCAN_LOG_LEVEL' environment variable to 'WARNING' and verifies that the
     Logger instance initializes with the log level correctly set to 'WARNING', as indicated
     by the arguments passed to `coloredlogs.install`.
     """
 
-    os.environ['MD_LOG_LEVEL'] = 'WARNING'
+    os.environ['VULCAN_LOG_LEVEL'] = 'WARNING'
     with patch('vulcan_logger.logger.coloredlogs.install') as mock_install:
         Logger('test_logger')
         mock_install.assert_called_once()
