@@ -27,7 +27,6 @@ class Logger:
     supports configuring different log levels, colored console output, and optional file logging.
 
     Attributes:
-        _logger (logging.Logger): The underlying logger instance from the standard logging library.
         level (str): The log level as a string, determining the severity of messages to be processed.
         file_name (str): The name of the file where logs will be written, if file logging is enabled.
         path (Optional[str]): The directory path for the log file. If not specified, file logging may 
