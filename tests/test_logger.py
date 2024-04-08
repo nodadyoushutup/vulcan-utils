@@ -51,7 +51,7 @@ def test_debug(method_name: str) -> None:
     """
 
     logger = Logger('test_logger')
-    with patch.object(logger.logger, method_name) as mock_log_method:
+    with patch.object(logger._logger, method_name) as mock_log_method:
         _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
@@ -69,7 +69,7 @@ def test_info(method_name: str) -> None:
     """
 
     logger = Logger('test_logger')
-    with patch.object(logger.logger, method_name) as mock_log_method:
+    with patch.object(logger._logger, method_name) as mock_log_method:
         _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
@@ -87,7 +87,7 @@ def test_warning(method_name: str) -> None:
     """
 
     logger = Logger('test_logger')
-    with patch.object(logger.logger, method_name) as mock_log_method:
+    with patch.object(logger._logger, method_name) as mock_log_method:
         _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
@@ -105,7 +105,7 @@ def test_critical(method_name: str) -> None:
     """
 
     logger = Logger('test_logger')
-    with patch.object(logger.logger, method_name) as mock_log_method:
+    with patch.object(logger._logger, method_name) as mock_log_method:
         _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
@@ -123,7 +123,7 @@ def test_error(method_name: str) -> None:
     """
 
     logger = Logger('test_logger')
-    with patch.object(logger.logger, method_name) as mock_log_method:
+    with patch.object(logger._logger, method_name) as mock_log_method:
         _simulate_logging_call("test_file.py", 123, getattr(
             logger, method_name), "Test message")
         mock_log_method.assert_called_once()
