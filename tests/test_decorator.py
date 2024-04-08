@@ -1,5 +1,7 @@
 from unittest.mock import patch
+
 import pytest
+
 from vulcan_logger.decorator import log
 
 

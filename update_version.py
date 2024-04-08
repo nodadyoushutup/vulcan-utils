@@ -1,6 +1,6 @@
 # update_version.py
-import sys
 import re
+import sys
 
 # The type of version update: 'major', 'minor', 'patch'
 update_type = sys.argv[1]

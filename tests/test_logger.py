@@ -1,6 +1,8 @@
-from unittest.mock import patch, Mock
 import os
+from unittest.mock import Mock, patch
+
 import pytest
+
 from vulcan_logger.logger import Logger
 
 
