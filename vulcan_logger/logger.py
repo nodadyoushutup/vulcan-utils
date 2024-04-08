@@ -2,6 +2,7 @@
 import inspect
 import logging
 import os
+import sys
 from typing import Callable
 
 import coloredlogs
@@ -52,7 +53,7 @@ class Logger:
                 datefmt=DATE_FORMAT
             )
         except Exception as e:
-            self._internal_error(f"Error installing coloredlogs", e)
+            self.error(f"Error installing coloredlogs: {e}")
 
     def _file_name(self):
         return f"{os.environ.get('VULCAN_LOG_NAME', 'vulcan')}.log"
@@ -62,7 +63,7 @@ class Logger:
             if not os.path.isdir(log_path):
                 os.makedirs(log_path, exist_ok=True)
         except Exception as e:
-            self._internal_error(f"Error creating the log directory", e)
+            self.error(f"Error creating the log directory: {e}")
 
     def _file_handler(self, log_path):
         try:
@@ -78,7 +79,7 @@ class Logger:
             file_handler.setFormatter(formatter)
             self.logger.addHandler(file_handler)
         except Exception as e:
-            self._internal_error(f"Error creating log file handler", e)
+            self.error(f"Error creating log file handler: {e}")
 
     def _setup(self) -> None:
         """
@@ -92,9 +93,8 @@ class Logger:
                 self._make_dir(log_path)
                 self._file_handler(log_path)
             except Exception as e:
-                self._internal_error(f"Error setting up file handler for logger", e)
-
-    
+                self.error(
+                    f"Error setting up file handler for logger: {e}")
 
     def _stack_trace(self) -> dict:
         """
@@ -115,18 +115,38 @@ class Logger:
                 break
         return caller_info
 
-    def _base(self, func: Callable[[str, bool], None], message: str, exc_info: bool) -> None:
+    def _exc_info(self) -> bool:
+        """
+        Determines if there is currently an exception being handled. This method checks if the
+        sys.exc_info() method returns any exception information.
+
+        Returns:
+            bool: True if there is an exception being handled, False otherwise.
+        """
+
+        exc_info = sys.exc_info()
+        if exc_info:
+            return exc_info[0] is not None
+        return False
+
+    def _base(self, func: Callable[[str, dict, bool], None], message: str) -> None:
         """
         Base function for logging a message, automatically including the caller's
-        filename and line number.
+        filename and line number, and conditionally including exception information
+        based on the current execution context.
+
+        This method checks if there is an exception being currently handled and
+        includes this information in the log if present.
 
         Args:
             func: The logging function to be called (debug, info, warning, etc.).
-            message: The log message.
-            exc_info: Whether to include exception information in the log.
+                This function must accept a message, extra information (in a dict),
+                and a boolean indicating whether to log exception info.
+            message: The log message to be recorded.
         """
 
         caller_info = self._stack_trace()
+        exc_info = self._exc_info()
         func(message, extra=caller_info, exc_info=exc_info)
 
     def debug(self, message: str) -> None:
@@ -137,7 +157,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.debug, message, exc_info=False)
+        self._base(self.logger.debug, message)
 
     def info(self, message: str) -> None:
         """
@@ -147,7 +167,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.info, message, exc_info=False)
+        self._base(self.logger.info, message)
 
     def warning(self, message: str) -> None:
         """
@@ -157,7 +177,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.warning, message, exc_info=False)
+        self._base(self.logger.warning, message)
 
     def critical(self, message: str) -> None:
         """
@@ -167,7 +187,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.critical, message, exc_info=False)
+        self._base(self.logger.critical, message)
 
     def error(self, message: str) -> None:
         """
@@ -177,17 +197,4 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.error, message, exc_info=True)
-
-    def _internal_error(self, message: str, exc: Exception) -> None:
-        """
-        Directly logs an error message for internal logger errors, avoiding recursion.
-
-        Args:
-            message: The context message for the error.
-            exc: The exception object caught.
-        """
-        # Directly print the error message and exception to stderr.
-        # This bypasses the logger's handlers to prevent recursion and ensures visibility.
-        final_message = f"Internal Logger Error: {message} | Exception: {exc}"
-        print(final_message)
+        self._base(self.logger.error, message)
