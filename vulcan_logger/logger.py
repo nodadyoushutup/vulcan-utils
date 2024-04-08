@@ -67,6 +67,7 @@ class Logger:
 
     def _file_handler(self, log_path):
         try:
+
             log_path = os.path.join(log_path, self._file_name())
             file_handler = logging.FileHandler(log_path)
             file_handler.setLevel(os.environ.get(
@@ -87,7 +88,10 @@ class Logger:
         """
 
         self._install_coloredlogs()
-        log_path = os.environ.get("log_path")
+        log_path = os.environ.get(
+            "VULCAN_LOG_PATH",
+            os.path.abspath(os.path.curdir)
+        )
         if log_path:
             try:
                 self._make_dir(log_path)

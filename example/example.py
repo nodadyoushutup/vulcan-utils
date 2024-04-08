@@ -12,6 +12,8 @@ from vulcan_logger.decorator import log
 
 
 os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"  # Global log level filter
+os.environ["VULCAN_LOG_PATH"] = "logs"  # Global log level filter
+os.environ["VULCAN_LOG_NAME"] = "example"  # Global log level filter
 
 # Functions defined with a log decorator. Level or Condition may be
 # passed as arguments on the decorator, or omitted.

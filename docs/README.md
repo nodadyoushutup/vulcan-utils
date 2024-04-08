@@ -63,16 +63,45 @@ product_result = conditional_log_example(5, 3)
 ```
 
 ### Advanced Configuration
-**Setting Global Log Level**: You can set a global log level by modifying the environment variable `VULCAN_LOG_LEVEL` before initializing your logger. This can be done within your script or externally through your system's environment settings. By default it is set to `DEBUG`.
+Vulcan Logger offers several environment variables to fine-tune logging behavior for your application. You can set these variables before initializing your logger to customize logging output, destination, and file naming.
 
-Python
-```python
-import os
-os.environ["VULCAN_LOG_LEVEL"] = "WARNING"
-```
-Bash
+#### Setting Global Log Level
+Control the log level globally across your application by setting the `VULCAN_LOG_LEVEL` environment variable. This determines the minimum level of messages that will be logged. Available levels are `DEBUG`, `INFO`, `WARNING`, `ERROR`, and `CRITICAL`.
+
+_bash_
 ```bash
 export VULCAN_LOG_LEVEL="WARNING"
+```
+
+_python_
+```python
+os.environ["VULCAN_LOG_LEVEL"] = "WARNING"
+```
+
+#### Setting Log File Path
+By default, Vulcan Logger writes logs to the current directory. Set the `VULCAN_LOG_PATH` environment variable to specify a custom directory for log files.
+
+_bash_
+```bash
+export VULCAN_LOG_PATH="~/logs"
+```
+
+_python_
+```python
+os.environ["VULCAN_LOG_PATH"] = "~/logs"
+```
+
+#### Setting Log File Name
+The default log file name is `vulcan`. Use the `VULCAN_LOG_NAME` environment variable to specify a different name for the log file. It will automatically use the `.log` extension type and does not need to be included in the name.
+
+_bash_
+```bash
+export VULCAN_LOG_NAME="example"
+```
+
+_python_
+```python
+os.environ["VULCAN_LOG_NAME"] = "example"
 ```
 
 ### Handling Exceptions
