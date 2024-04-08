@@ -40,7 +40,8 @@ class Logger:
             name: The name of the logger. Defaults to the module's name.
             level: The logging level as a string. Defaults to "DEBUG".
         """
-        self.logger = logging.getLogger(name)
+
+        self._logger = logging.getLogger(name)
         self.level = level.upper()
         self._setup()
 
@@ -48,7 +49,7 @@ class Logger:
         try:
             coloredlogs.install(
                 level=os.environ.get("VULCAN_LOG_LEVEL", self.level).upper(),
-                logger=self.logger,
+                logger=self._logger,
                 fmt=LOG_FORMAT,
                 datefmt=DATE_FORMAT
             )
@@ -78,7 +79,7 @@ class Logger:
                 datefmt=DATE_FORMAT
             )
             file_handler.setFormatter(formatter)
-            self.logger.addHandler(file_handler)
+            self._logger.addHandler(file_handler)
         except Exception as e:
             self.error(f"Error creating log file handler: {e}")
 
@@ -161,7 +162,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.debug, message)
+        self._base(self._logger.debug, message)
 
     def info(self, message: str) -> None:
         """
@@ -171,7 +172,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.info, message)
+        self._base(self._logger.info, message)
 
     def warning(self, message: str) -> None:
         """
@@ -181,7 +182,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.warning, message)
+        self._base(self._logger.warning, message)
 
     def critical(self, message: str) -> None:
         """
@@ -191,7 +192,7 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.critical, message)
+        self._base(self._logger.critical, message)
 
     def error(self, message: str) -> None:
         """
@@ -201,4 +202,4 @@ class Logger:
             message: The message to log.
         """
 
-        self._base(self.logger.error, message)
+        self._base(self._logger.error, message)
