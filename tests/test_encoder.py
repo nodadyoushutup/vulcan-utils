@@ -1,9 +1,10 @@
 # tests/test_encoder.py
 import json
-from datetime import datetime, date, time
+import uuid
+from datetime import date, datetime, time
 from decimal import Decimal
 from enum import Enum
-import uuid
+
 from vulcan_logger.encoder import Encoder
 
 
