@@ -12,24 +12,25 @@ Vulcan Logger is a Python package that provides a customizable logging utility w
 - **Conditional Logging**: Conditionally log messages based on specific conditions to control verbosity.
 
 ## Installation
-You can install Vulcan Logger via pip:
+You can install Vulcan Logger via PIP:
 
 ```bash
 pip install vulcan-logger
 ```
 
 ## Usage
-[Please check out example usage here](https://github.com/nodadyoushutup/vulcan-logger/blob/main/example/example.py)
+[View example usage here](https://github.com/nodadyoushutup/vulcan-logger/blob/main/example/example.py)
 
 ### Basic Logging
-1. Import the Logger class from the vulcan_logger.logger module.
+1. Import the Logger class from the `vulcan_logger.logger` module.
 2. Initialize a Logger instance with a name and an optional log level. The default log level is INFO.
 3. Use the logging methods (debug, info, warning, error, critical) to log messages at various severity levels.
+
 ```python
 from vulcan_logger.logger import Logger
 
 # Initialize the logger with a custom name and log level
-logger = Logger(name='application_log', level='DEBUG')
+logger = Logger(name='example', level='DEBUG')
 
 # Log messages at different levels
 logger.debug("Debug message for detailed diagnostic information")
@@ -42,8 +43,9 @@ logger.critical("Critical message for severe conditions")
 ### Function Logging with Decorators
 Vulcan Logger provides a logging decorator that can be applied to functions to automatically log calls, returns, and execution times. To use this feature:
 
-1. Import the log decorator from the vulcan_logger.decorator module.
+1. Import the log decorator from the `vulcan_logger.decorator` module.
 2. Apply the @log decorator to any function. You can optionally specify a log level or a condition for logging.
+
 ```python
 from vulcan_logger.decorator import log
 
