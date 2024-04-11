@@ -14,7 +14,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const {github, context} = require('@actions/github');
           const titleRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC)\] .*/;
           const title = context.payload.pull_request.title;
           if (!titleRegex.test(title)) {
