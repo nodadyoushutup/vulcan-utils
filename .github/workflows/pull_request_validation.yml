@@ -1,0 +1,22 @@
+name: Enforce Pull Request Naming Convention
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  enforce-naming-convention:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check PR title format
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const titleRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL)\] .*/;
+          const title = context.payload.pull_request.title;
+          if (!titleRegex.test(title)) {
+            console.error(`PR title "${title}" doesn't match the required format.`);
+            process.exit(1);
+          }
