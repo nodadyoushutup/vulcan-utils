@@ -26,7 +26,10 @@ jobs:
           });
           
           const commitRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL|DEP|WIP)\] .*/;
-          const invalidCommits = commits.data.filter(commit => !commitRegex.test(commit.commit.message));
+          const invalidCommits = commits.data.filter(commit => 
+            !commit.commit.message.startsWith("Merge ") &&
+            !commitRegex.test(commit.commit.message)
+          );
 
           if (invalidCommits.length > 0) {
             console.error('Some commit messages are invalid:');
