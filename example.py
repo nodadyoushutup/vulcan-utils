@@ -1,7 +1,8 @@
-# example.py
+# # example.py
 import os
 import time
 
+from vulcan_utils.cache import Cache
 from vulcan_utils.decorator import Decorator
 from vulcan_utils.logger import Logger
 from vulcan_utils.formatter import Formatter
@@ -83,3 +84,13 @@ for i in range(6):
     if response:
         logger.info(f"Call {i + 1}: Success")
     time.sleep(1)
+
+
+# Using Caching
+# Must install `redis-tools` and `redis-server` first
+cache = Cache()
+cache.set("user:1", {"name": "John", "age": 30}, expire=3600)
+user = cache.get("user:1")
+logger.info(f"Cache get: {user}")
+cache.delete("user:1")
+cache.clear()

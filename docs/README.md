@@ -20,6 +20,7 @@ Vulcan Utils is a Python package designed to enhance the logging capabilities of
 - **Advanced Retry Mechanisms**: The retry decorators provide robust error handling by allowing repeated execution of functions upon failure, customizable by attempts and delays, which is invaluable for dealing with transient system or network issues.
 - **Automatic JSON Serialization**: Simplify data interchange in API services and other integrations with automatic JSON serialization of function outputs, streamlining responses and reducing boilerplate code.
 - **Rate Limiting Controls**: Enforce execution limits on functions with the rate limit decorator to manage resource utilization effectively and prevent system overload, which is essential for maintaining service availability and performance under high load.
+- **Caching**: Easy to use interface to connect with a Redis database, store, and retrieve data.
 
 
 ## Installation
@@ -117,6 +118,58 @@ from vulcan_utils.decorator import Decorator
 def example_rate_limit():
     """A function that is rate limited."""
     return "This function is rate-limited."
+```
+
+### Caching
+The `Cache` class provides a straightforward way to interact with a Redis server for caching data. It handles connections, as well as setting, getting, deleting, and clearing cache data with exception management to ensure robust operation.
+
+You must have Redis installed and running on the machine to utilize this functionality. You can install Redis with the following command:
+
+```bash
+sudo apt install redis-server
+```
+
+It is also optional, but recommend, to install the Redis CLI package to interact with the Redis database directly. You can install Redis CLI with the following command:
+
+```bash
+sudo apt install redis-tools
+```
+
+#### Initialization
+Create an instance of the `Cache` class by specifying the Redis server's hostname, port, and database index. The instance will attempt to establish a connection immediately. By default if not otherwise specified a `Cache` object will use `localhost` as a host, port `6379`, and `0` db.
+
+```python
+from vulcan_utils.cache import Cache
+
+cache = Cache(host="localhost", port=6379, db=0)
+```
+
+#### Setting Values
+Store values in the cache with an optional expiration time. The value must be JSON-serializable as it will be serialized using the custom Encoder. By default there is no expire time.
+
+```python
+cache.set("user:1", {"name": "John Doe", "age": 30}, expire=3600)
+```
+
+#### Getting Values
+Retrieve values from the cache using a key. If the key exists, the value is returned after being deserialized from JSON; otherwise, `None` is returned.
+
+```python
+user = cache.get("user:1")
+```
+
+#### Deleting Values
+Remove a specific key and its associated value from the cache.
+
+```python
+cache.delete("user:1")
+```
+
+#### Clearing the Cache
+Clear all keys and values in the currently selected Redis database.
+
+```python
+cache.clear()
 ```
 
 ### Advanced Configuration

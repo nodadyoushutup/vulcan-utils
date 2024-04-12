@@ -5,3 +5,4 @@ myst-parser==2.0.0
 pytest==8.1.1
 isort==5.13.2
 autopep8==2.1.0
+redis==5.0.3
