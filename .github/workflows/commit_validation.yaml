@@ -1,11 +1,11 @@
-name: Pull Request Validation
+name: Commit Validation
 
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  naming-convention:
+  commit-naming-convention:
     runs-on: ubuntu-latest
     
     steps:

@@ -6,7 +6,7 @@ on:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  naming-convention:
+  pull-request-naming-convention:
     runs-on: ubuntu-latest
     
     steps:
