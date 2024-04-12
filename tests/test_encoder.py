@@ -5,7 +5,7 @@ from datetime import date, datetime, time
 from decimal import Decimal
 from enum import Enum
 
-from vulcan_logger.encoder import Encoder
+from vulcan_utils.encoder import Encoder
 
 
 class MockEnum(Enum):

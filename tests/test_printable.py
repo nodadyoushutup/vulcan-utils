@@ -1,5 +1,5 @@
 # tests/test_printable.py
-from vulcan_logger.printable import Printable
+from vulcan_utils.printable import Printable
 
 
 def test_empty_class():

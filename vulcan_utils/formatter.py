@@ -1,4 +1,4 @@
-# vulcan_logger/formatter.py
+# vulcan_utils/formatter.py
 MS_IN_SECOND = 1000
 MS_IN_MINUTE = 60 * MS_IN_SECOND
 MS_IN_HOUR = 60 * MS_IN_MINUTE

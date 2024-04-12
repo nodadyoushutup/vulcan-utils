@@ -1,40 +1,40 @@
-.. docs/source/vulcan_logger.rst
+.. docs/source/vulcan_utils.rst
 
-vulcan_logger.decorator
+vulcan_utils.decorator
 =======================
-.. automodule:: vulcan_logger.decorator
+.. automodule:: vulcan_utils.decorator
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-vulcan_logger.encoder
+vulcan_utils.encoder
 =======================
-.. automodule:: vulcan_logger.encoder
+.. automodule:: vulcan_utils.encoder
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-vulcan_logger.formatter
+vulcan_utils.formatter
 =======================
-.. automodule:: vulcan_logger.formatter
+.. automodule:: vulcan_utils.formatter
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-vulcan_logger.logger
+vulcan_utils.logger
 ====================
-.. automodule:: vulcan_logger.logger
+.. automodule:: vulcan_utils.logger
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-vulcan_logger.printable
+vulcan_utils.printable
 =======================
-.. automodule:: vulcan_logger.printable
+.. automodule:: vulcan_utils.printable
    :members:
    :undoc-members:
    :show-inheritance:
