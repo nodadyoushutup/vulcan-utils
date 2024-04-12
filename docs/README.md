@@ -5,7 +5,7 @@ Vulcan Utils is a Python package designed to enhance the logging capabilities of
 
 **Requires Python 3.9 or higher**
 
-[View the full technical documentation here](https://vulcan-logger.readthedocs.io/en/latest/)
+[View the full technical documentation here](https://vulcan-utils.readthedocs.io/en/latest/)
 
 [View the PyPi project here](https://pypi.org/project/vulcan-utils/)
 
