@@ -19,14 +19,8 @@ class Decorator:
 
     This class implements static and class methods to provide utility functions that can be applied to other functions
     to log details about their calls and results, retry execution on failures, serialize outputs to JSON, and limit
-    the rate of function execution. T
-
-    Methods:
-        log: Decorates a function to log its call and return details, including execution time.
-        retry: Decorates a function to retry execution a specified number of times upon failure.
-        to_json: Decorates a function to serialize its return value to a JSON string using a custom encoder.
-        rate_limit: Decorates a function to limit its call rate to a specified threshold over a given time interval.
-    """
+    the rate of function execution.
+     """
 
     @staticmethod
     def _call_message(func: Callable[..., Any], *args: Any, **kwargs: Any) -> str:
