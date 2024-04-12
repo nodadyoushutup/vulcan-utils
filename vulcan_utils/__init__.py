@@ -3,5 +3,6 @@ from . import (
     encoder,
     logger,
     formatter,
-    printable
+    printable,
+    cache,
 )
