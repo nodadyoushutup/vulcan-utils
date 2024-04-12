@@ -14,7 +14,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const titleRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL)\] .*/;
+          const titleRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL|DEP)\] .*/;
           const title = context.payload.pull_request.title;
           if (!titleRegex.test(title)) {
             console.error(`PR title "${title}" doesn't match the required format.`);
