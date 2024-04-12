@@ -184,3 +184,37 @@ def to_json(_func: Union[Callable[[F], F], F] = None) -> Union[Callable[[F], F],
     if _func is not None:
         return decorator_to_json(_func)
     return decorator_to_json
+
+
+def rate_limit(limit: int, interval: float):
+    """
+    Decorator to rate limit the execution of a function. Allows a burst of 'limit' calls,
+    and then enforces a cooldown period of 'interval' seconds before allowing another burst.
+
+    Args:
+        limit (int): Maximum number of calls allowed within the burst.
+        interval (float): Cooldown interval (in seconds) after a burst before resetting the limit.
+    """
+
+    def decorator(func):
+        call_times = []
+        first_call_time = None
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            nonlocal first_call_time
+            now = time.time()
+            if first_call_time and now - first_call_time > interval:
+                call_times.clear()
+                first_call_time = None
+            if not first_call_time:
+                first_call_time = now
+            if len(call_times) < limit:
+                call_times.append(now)
+                return func(*args, **kwargs)
+            else:
+                logger = Logger(func.__module__)
+                logger.error(f"Rate limit exceeded for {func.__name__}")
+                return
+        return wrapper
+    return decorator
