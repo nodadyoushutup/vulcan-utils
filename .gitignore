@@ -1,9 +1,3 @@
-# Example
-example.py
-
-# Twine credentials
-twine_creds.sh
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -62,7 +56,7 @@ cover/
 *.pot
 
 # Django stuff:
-logs/
+logs/*
 *.log
 local_settings.py
 db.sqlite3

@@ -1,4 +1,4 @@
-# medusa_logger/decorator.py
+# vulcan_utils/decorator.py
 import json
 import time
 from functools import wraps
