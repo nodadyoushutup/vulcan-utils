@@ -19,12 +19,18 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const commits = await github.rest.pulls.listCommits({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number
+          });
+          
           const commitRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL|DEP|WIP)\] .*/;
           const invalidCommits = commits.data.filter(commit => 
             !commit.commit.message.startsWith("Merge ") &&
             !commitRegex.test(commit.commit.message)
           );
-          
+
           if (invalidCommits.length > 0) {
             console.error('Some commit messages are invalid:');
             invalidCommits.forEach(commit => {
