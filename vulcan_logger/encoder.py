@@ -44,8 +44,11 @@ class Encoder(json.JSONEncoder):
         elif HAS_NUMPY_PANDAS:
             if isinstance(obj, np.ndarray):
                 return obj.tolist()
-            elif 'pandas' in str(type(obj)):
-                return obj.to_dict(orient='records')
+            elif "pandas" in str(type(obj)):
+                return obj.to_dict(orient="records")
         elif hasattr(obj, "__dict__"):
-            return obj.__dict__
-        return json.JSONEncoder.default(self, obj)
+            # Serialize objects by their dictionary representation, filtering out non-serializable attributes
+            return {key: self.default(value) for key, value in obj.__dict__.items()}
+        else:
+            # Skip serialization for other non-handled types
+            return str(obj)  # Fallback to a simple string representation
