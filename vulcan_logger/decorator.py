@@ -111,3 +111,48 @@ def log(_func: Optional[F] = None, *, condition: bool = True, level: str = "DEBU
         return decorator_log
     else:
         return decorator_log(_func)
+
+
+def retry(_func: Optional[F] = None, *, retries: int = 3, delay: Union[int, float] = 1) -> Union[Callable[[F], F], F]:
+    """
+    Decorator to retry a function if it raises an exception. Retries the function a specified number of times with
+    a given delay between each attempt. If all attempts fail, the last exception is raised.
+
+    Args:
+        _func: The function to be decorated. Defaults to None, allowing other parameters to be specified first.
+        retries: The maximum number of retries before giving up and raising the exception.
+        delay: The delay between retries in seconds, which can be an integer or a float for partial seconds.
+
+    Returns:
+        The decorated function that will retry on exceptions, or raises the last encountered exception if all retries fail.
+
+    Raises:
+        Exception: The last exception encountered if the retry attempts exceed the specified limit.
+    """
+
+    def decorator_retry(func: F):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            nonlocal retries
+            last_exception = None
+            for attempt in range(retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exception = e
+                    if attempt < retries:
+                        logger = Logger(func.__module__)
+                        left = retries - attempt - 1
+                        logger.warning(
+                            f"{func.__name__} failed, retrying: {e}, attempts left: {left}"
+                        )
+                        time.sleep(delay)
+                    else:
+                        logger.error(
+                            f"{func.__name__} retry attemps failed: {e}")
+                        break
+            raise last_exception
+        return wrapper
+    if _func is not None:
+        return decorator_retry(_func)
+    return decorator_retry
