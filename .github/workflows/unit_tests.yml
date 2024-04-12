@@ -1,4 +1,4 @@
-# .github/workflows/python-package.yml
+# .github/workflows/unit_tests.yml
 name: Unit Tests
 
 on:
