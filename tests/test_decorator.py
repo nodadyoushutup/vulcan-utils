@@ -165,7 +165,7 @@ def test_retry_logging(attempts_list, max_attempts) -> None:
             attempts_list[0] == max_attempts)
 
 
-def test_to_json_decorator():
+def test_to_json():
     """
     Test the to_json decorator to ensure it correctly serializes the return value of a function to a JSON string using
     a custom encoder. The function will return a dictionary which should be serialized into a JSON string.
