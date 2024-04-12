@@ -1,4 +1,3 @@
-<!-- docs/pull_request_template.md -->
 ## Pull Request Checklist
 Please check with an X
 - [] **Documentation:** Docstrings, type hints, and comments are created or updated to maintain code readability.
