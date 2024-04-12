@@ -2,9 +2,8 @@
 import os
 import time
 
-from vulcan_utils.decorator import log, retry, to_json, rate_limit
+from vulcan_utils.decorator import Decorator
 from vulcan_utils.logger import Logger
-from vulcan_utils.encoder import Encoder
 from vulcan_utils.formatter import Formatter
 
 os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"  # Global log level filter
@@ -14,37 +13,38 @@ os.environ["VULCAN_LOG_NAME"] = "example"  # Log file name
 logger = Logger(__name__)
 
 
-@log
+@Decorator.log
 def baseline_function(x, y):
     """A simple function to demonstrate baseline logging."""
     return x / y
 
 
-@log(level="WARNING")
+@Decorator.log(level="WARNING")
 def level_function(x, y):
     """A function to demonstrate specific level logging."""
     return x + y
 
 
-@log(condition=True)
+@Decorator.log(condition=True)
 def condition_function(x, y):
     """A function to demonstrate conditional logging."""
     return x + y
 
 
-@retry(retries=3, delay=1)
+@Decorator.retry(retries=3, delay=1)
 def retry_function(x, y):
     """A function that retries upon failure, demonstrated with division."""
     return x / y
 
 
-@to_json
+@Decorator.to_json
 def json_function(data):
     """A function that returns its result in JSON format."""
     return {"data": data}
 
 
-@rate_limit(limit=3, interval=5)  # Reduced interval for demonstration
+# Reduced interval for demonstration
+@Decorator.rate_limit(limit=3, interval=5)
 def rate_limited_function():
     """A function that is rate limited."""
     return "This function is rate-limited."
