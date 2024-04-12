@@ -113,45 +113,49 @@ def log(_func: Optional[F] = None, *, condition: bool = True, level: str = "DEBU
         return decorator_log(_func)
 
 
-def retry(_func: Optional[F] = None, *, retries: int = 3, delay: Union[int, float] = 1) -> Union[Callable[[F], F], F]:
+def retry(_func: Optional[F] = None, *, retries: int = 3, delay: Union[int, float] = 1, infinite: bool = False) -> Union[Callable[[F], F], F]:
     """
-    Decorator to retry a function if it raises an exception. Retries the function a specified number of times with
-    a given delay between each attempt. If all attempts fail, the last exception is raised.
+    Decorator to retry a function if it raises an exception. Optionally retries the function indefinitely if
+    the 'infinite' parameter is True. If not, it retries a specified number of times with a given delay between each attempt.
+    If all finite attempts fail, the last exception is raised.
 
     Args:
         _func: The function to be decorated. Defaults to None, allowing other parameters to be specified first.
-        retries: The maximum number of retries before giving up and raising the exception.
+        retries: The maximum number of retries before giving up and raising the exception if not infinite.
         delay: The delay between retries in seconds, which can be an integer or a float for partial seconds.
+        infinite: If True, the function will retry indefinitely. Defaults to False.
 
     Returns:
-        The decorated function that will retry on exceptions, or raises the last encountered exception if all retries fail.
+        The decorated function that will retry on exceptions, or raises the last encountered exception if all retries fail and not infinite.
 
     Raises:
-        Exception: The last exception encountered if the retry attempts exceed the specified limit.
+        Exception: The last exception encountered if the retry attempts exceed the specified limit and not infinite.
     """
 
     def decorator_retry(func: F):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            nonlocal retries
-            last_exception = None
-            for attempt in range(retries + 1):
+            attempt = 0
+            while True:
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
-                    last_exception = e
-                    if attempt < retries:
-                        logger = Logger(func.__module__)
-                        left = retries - attempt - 1
+                    logger = Logger(__name__)
+                    if infinite:
                         logger.warning(
-                            f"{func.__name__} failed, retrying: {e}, attempts left: {left}"
+                            f"{func.__name__} failed, retrying indefinitely: {e}"
                         )
                         time.sleep(delay)
                     else:
-                        logger.error(
-                            f"{func.__name__} retry attemps failed: {e}")
-                        break
-            raise last_exception
+                        if attempt < retries:
+                            logger.warning(
+                                f"{func.__name__} failed, retrying: {e}, attempts left: {retries - attempt - 1}")
+                            time.sleep(delay)
+                            attempt += 1
+                        else:
+                            logger.error(
+                                f"{func.__name__} retry attempts failed: {e}")
+                            raise e
         return wrapper
     if _func is not None:
         return decorator_retry(_func)
