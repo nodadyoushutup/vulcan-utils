@@ -1,4 +1,4 @@
-# medusa_logger/encoder.py
+# vulcan_utils/encoder.py
 import json
 import uuid
 from datetime import date, datetime

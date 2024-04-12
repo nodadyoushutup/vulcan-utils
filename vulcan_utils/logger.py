@@ -1,4 +1,4 @@
-# medusa_logger/logger.py
+# vulcan_utils/logger.py
 import inspect
 import logging
 import os
