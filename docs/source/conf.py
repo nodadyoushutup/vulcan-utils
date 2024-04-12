@@ -3,10 +3,10 @@
 import os
 import sys
 
-# Add the project root to the path to make the vulcan_logger package available to Sphinx
+# Add the project root to the path to make the vulcan_utils package available to Sphinx
 sys.path.insert(0, os.path.abspath('../../'))
 
-project = 'Vulcan Logger'
+project = 'Vulcan Utils'
 copyright = '2024, Jacob Holland'
 author = 'Jacob Holland'
 release = '0.0.1'

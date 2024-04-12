@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from vulcan_logger.logger import Logger
+from vulcan_utils.logger import Logger
 
 
 def _simulate_logging_call(file_name: str, line_no: int, func: callable, message: str) -> None:
@@ -38,7 +38,7 @@ def test_logger_initialization() -> None:
     is executed properly.
     """
 
-    with patch('vulcan_logger.logger.coloredlogs.install') as mock_install:
+    with patch('vulcan_utils.logger.coloredlogs.install') as mock_install:
         Logger('test_logger', 'INFO')
         mock_install.assert_called_once()
 
@@ -143,7 +143,7 @@ def test_log_level_from_env() -> None:
     """
 
     os.environ['VULCAN_LOG_LEVEL'] = 'WARNING'
-    with patch('vulcan_logger.logger.coloredlogs.install') as mock_install:
+    with patch('vulcan_utils.logger.coloredlogs.install') as mock_install:
         Logger('test_logger')
         mock_install.assert_called_once()
         called_args, called_kwargs = mock_install.call_args

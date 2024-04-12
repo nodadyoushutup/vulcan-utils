@@ -4,9 +4,9 @@ with open("docs/README.md", "r") as f:
     description = f.read()
 
 setup(
-    name="vulcan-logger",
-    version="1.10.2",
-    description="A logging utility package with colored logs.",
+    name="vulcan-utils",
+    version="1.11.0",
+    description="A utility package Python",
     packages=find_packages(),
     install_requires=[
         "coloredlogs",

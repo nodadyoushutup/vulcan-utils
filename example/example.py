@@ -7,8 +7,8 @@ the `python3` command.
 
 import os
 
-from vulcan_logger.decorator import log
-from vulcan_logger.logger import Logger
+from vulcan_utils.decorator import log
+from vulcan_utils.logger import Logger
 
 os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"  # Global log level filter
 os.environ["VULCAN_LOG_PATH"] = "logs"  # Global log level filter

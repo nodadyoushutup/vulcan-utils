@@ -6,8 +6,8 @@ from unittest.mock import patch
 
 import pytest
 
-from vulcan_logger.decorator import log, rate_limit, retry, to_json
-from vulcan_logger.encoder import Encoder
+from vulcan_utils.decorator import log, rate_limit, retry, to_json
+from vulcan_utils.encoder import Encoder
 
 
 def _sample_function(x: int, y: int = 2) -> int:
@@ -73,7 +73,7 @@ def test_log_decorator_execution_time(delay: float) -> None:
         delay (float): Simulated function execution delay to test timing accuracy.
     """
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         decorated = log(_slow_function)
         decorated(delay)
         last_call_args = mock_logger.return_value.debug.call_args_list[-1][0][0]
@@ -86,7 +86,7 @@ def test_log_decorator_basic() -> None:
     returns, and execution times correctly and returns the expected function results.
     """
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         decorated = log(_sample_function)
         result = decorated(1, y=3)
         assert result == 4
@@ -100,7 +100,7 @@ def test_log_decorator_condition_false() -> None:
     still executes and returns correctly.
     """
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         decorated = log(_sample_function, condition=False)
         result = decorated(1, y=3)
         assert result == 4
@@ -113,7 +113,7 @@ def test_log_decorator_log_level() -> None:
     This test ensures that the decorator respects the 'level' parameter and logs at the correct severity.
     """
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         decorated = log(_sample_function, level="INFO")
         decorated(1, 2)
         assert mock_logger.return_value.info.call_count == 3
@@ -150,7 +150,7 @@ def test_retry_logging(attempts_list, max_attempts) -> None:
     Tests that logging occurs as expected during retries and at failure.
     """
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         decorated = retry(
             _failing_function,
             retries=max_attempts - 1, delay=0.1
@@ -211,7 +211,7 @@ def test_rate_limit(num_calls, sleep_time, expected_errors):
     def test_function():
         return
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         for _ in range(num_calls):
             test_function()
             time.sleep(sleep_time)
@@ -226,7 +226,7 @@ def test_rate_limit_reset():
     def test_function():
         return
 
-    with patch('vulcan_logger.decorator.Logger') as mock_logger:
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
         for _ in range(5):
             test_function()  # These should all pass
         time.sleep(1.1)      # Wait for the interval to pass

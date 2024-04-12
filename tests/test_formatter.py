@@ -1,6 +1,6 @@
 # tests/test_formatter.py
 import pytest
-from vulcan_logger.formatter import Formatter
+from vulcan_utils.formatter import Formatter
 
 
 @pytest.mark.parametrize("milliseconds, expected", [
