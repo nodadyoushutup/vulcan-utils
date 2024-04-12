@@ -1,1 +1,7 @@
-from . import decorator, encoder, logger
+from . import (
+    decorator,
+    encoder,
+    logger,
+    formatter,
+    printable
+)
