@@ -27,7 +27,7 @@ Vulcan Utils is a Python package designed to enhance the logging capabilities of
 You can install Vulcan Utils via PIP:
 
 ```bash
-pip install vulcan-logger
+pip install vulcan-utils
 ```
 
 ## Usage
