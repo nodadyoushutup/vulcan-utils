@@ -156,3 +156,27 @@ def retry(_func: Optional[F] = None, *, retries: int = 3, delay: Union[int, floa
     if _func is not None:
         return decorator_retry(_func)
     return decorator_retry
+
+
+def to_json(_func: Union[Callable[[F], F], F] = None) -> Union[Callable[[F], F], F]:
+    """
+    A decorator that serializes the return value of the decorated function to JSON.
+    This uses a custom JSON encoder to handle complex data types not typically serializable by the default JSON encoder.
+
+    Args:
+        _func (Callable[[F], F], optional): The function to decorate. If None, this allows other parameters to be 
+            passed first as keyword arguments. Defaults to None.
+
+    Returns:
+        Callable[[F], F]: The decorated function with its return value serialized as a JSON string.
+    """
+
+    def decorator_to_json(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args, **kwargs) -> str:
+            result = func(*args, **kwargs)
+            return json.dumps(result, cls=Encoder, ensure_ascii=False)
+        return wrapper
+    if _func is not None:
+        return decorator_to_json(_func)
+    return decorator_to_json

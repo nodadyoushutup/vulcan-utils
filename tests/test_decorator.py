@@ -1,8 +1,13 @@
-from unittest.mock import patch
-import pytest
+import json
 import time
+from datetime import datetime
 from typing import List
-from vulcan_logger.decorator import log, retry, Logger
+from unittest.mock import patch
+
+import pytest
+
+from vulcan_logger.decorator import log, retry, to_json
+from vulcan_logger.encoder import Encoder
 
 
 def _sample_function(x: int, y: int = 2) -> int:
@@ -158,3 +163,33 @@ def test_retry_logging(attempts_list, max_attempts) -> None:
         assert mock_logger.return_value.warning.call_count == expected_warning_calls
         assert mock_logger.return_value.error.called == (
             attempts_list[0] == max_attempts)
+
+
+def test_to_json_decorator():
+    """
+    Test the to_json decorator to ensure it correctly serializes the return value of a function to a JSON string using
+    a custom encoder. The function will return a dictionary which should be serialized into a JSON string.
+    """
+
+    @to_json
+    def sample_function():
+        return {"name": "Alice", "age": 30, "time": datetime(2020, 5, 17)}
+
+    result = sample_function()
+    expected_json = json.dumps(
+        {"name": "Alice", "age": 30, "time": "2020-05-17T00:00:00"}, cls=Encoder)
+
+    assert result == expected_json, "The JSON output from the decorated function did not match the expected JSON string."
+
+    # Also ensure that it raises no error when trying to serialize more complex data types
+    @to_json
+    def complex_data_function():
+        return {"date": datetime.now(), "data": [1, 2, 3]}
+
+    try:
+        json_result = complex_data_function()
+        # this will confirm json_result is a valid JSON string
+        json.loads(json_result)
+        assert True, "Serialization of complex data types was successful."
+    except Exception as e:
+        assert False, f"Serialization failed with error: {e}"
