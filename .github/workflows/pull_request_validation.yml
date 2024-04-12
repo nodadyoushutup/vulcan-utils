@@ -6,7 +6,7 @@ on:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  enforce-naming-convention:
+  naming-convention:
     runs-on: ubuntu-latest
     
     steps:
