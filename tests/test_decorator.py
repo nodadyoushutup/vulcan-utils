@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-from vulcan_utils.decorator import log, rate_limit, retry, to_json
+from vulcan_utils.decorator import Decorator as decorator
 from vulcan_utils.encoder import Encoder
 
 
@@ -74,7 +74,7 @@ def test_log_decorator_execution_time(delay: float) -> None:
     """
 
     with patch('vulcan_utils.decorator.Logger') as mock_logger:
-        decorated = log(_slow_function)
+        decorated = decorator.log(_slow_function)
         decorated(delay)
         last_call_args = mock_logger.return_value.debug.call_args_list[-1][0][0]
         assert "milliseconds" in last_call_args
@@ -87,7 +87,7 @@ def test_log_decorator_basic() -> None:
     """
 
     with patch('vulcan_utils.decorator.Logger') as mock_logger:
-        decorated = log(_sample_function)
+        decorated = decorator.log(_sample_function)
         result = decorated(1, y=3)
         assert result == 4
         assert mock_logger.return_value.debug.call_count == 3
@@ -101,7 +101,7 @@ def test_log_decorator_condition_false() -> None:
     """
 
     with patch('vulcan_utils.decorator.Logger') as mock_logger:
-        decorated = log(_sample_function, condition=False)
+        decorated = decorator.log(_sample_function, condition=False)
         result = decorated(1, y=3)
         assert result == 4
         mock_logger.return_value.debug.assert_not_called()
@@ -114,7 +114,7 @@ def test_log_decorator_log_level() -> None:
     """
 
     with patch('vulcan_utils.decorator.Logger') as mock_logger:
-        decorated = log(_sample_function, level="INFO")
+        decorated = decorator.log(_sample_function, level="INFO")
         decorated(1, 2)
         assert mock_logger.return_value.info.call_count == 3
 
@@ -126,7 +126,7 @@ def test_retry_success() -> None:
     """
 
     attempts = [0]
-    decorated = retry(_failing_function, retries=2, delay=0.1)
+    decorated = decorator.retry(_failing_function, retries=2, delay=0.1)
     result = decorated(attempts=attempts, max_attempts=2)
     assert result == "Success"
     assert attempts[0] == 2
@@ -138,7 +138,7 @@ def test_retry_fail() -> None:
     """
 
     attempts = [0]
-    decorated = retry(_failing_function, retries=1, delay=0.1)
+    decorated = decorator.retry(_failing_function, retries=1, delay=0.1)
     with pytest.raises(ValueError):
         decorated(attempts=attempts, max_attempts=3)
     assert attempts[0] == 2
@@ -151,7 +151,7 @@ def test_retry_logging(attempts_list, max_attempts) -> None:
     """
 
     with patch('vulcan_utils.decorator.Logger') as mock_logger:
-        decorated = retry(
+        decorated = decorator.retry(
             _failing_function,
             retries=max_attempts - 1, delay=0.1
         )
@@ -171,7 +171,7 @@ def test_to_json():
     a custom encoder. The function will return a dictionary which should be serialized into a JSON string.
     """
 
-    @to_json
+    @decorator.to_json
     def sample_function():
         return {"name": "Alice", "age": 30, "time": datetime(2020, 5, 17)}
     result = sample_function()
@@ -179,7 +179,7 @@ def test_to_json():
         {"name": "Alice", "age": 30, "time": "2020-05-17T00:00:00"}, cls=Encoder)
     assert result == expected_json, "The JSON output from the decorated function did not match the expected JSON string."
 
-    @to_json
+    @decorator.to_json
     def complex_data_function():
         return {"date": datetime.now(), "data": [1, 2, 3]}
     try:
@@ -207,7 +207,7 @@ def test_rate_limit(num_calls, sleep_time, expected_errors):
         expected_errors (int): Number of times the rate limit should trigger and log an error.
     """
 
-    @rate_limit(limit=50, interval=10)
+    @decorator.rate_limit(limit=50, interval=10)
     def test_function():
         return
 
@@ -222,7 +222,7 @@ def test_rate_limit_reset():
     """
     Test that the rate limit properly resets after the cooldown interval.
     """
-    @rate_limit(limit=5, interval=1)  # Very short interval for test speed
+    @decorator.rate_limit(limit=5, interval=1)  # Very short interval for test speed
     def test_function():
         return
 
