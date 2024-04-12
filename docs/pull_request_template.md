@@ -1,5 +1,6 @@
+<!-- docs/pull_request_template.md -->
 ## Pull Request Checklist
-<small>Please check with an X</small>
+Please check with an X
 - [] **Documentation:** Docstrings, type hints, and comments are created or updated to maintain code readability.
 - [] **Unit Tests:** Added or updated to ensure new functionality is properly tested.
 - [] **Local Testing:** Passed unit tests locally to ensure changes work as expected.

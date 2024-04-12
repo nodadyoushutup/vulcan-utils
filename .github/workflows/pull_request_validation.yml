@@ -1,11 +1,12 @@
-name: Enforce Pull Request Naming Convention
+# .github/workflows/pull_request_validation.yml
+name: Pull Request Validation
 
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  enforce-naming-convention:
+  pull-request-naming-convention:
     runs-on: ubuntu-latest
     
     steps:
