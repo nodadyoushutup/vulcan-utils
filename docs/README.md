@@ -1,7 +1,13 @@
+<!-- docs/README.md -->
 # Vulcan Utils
-Vulcan Utils is a Python package that provides a customizable logging utility with support for automatic inclusion of caller's filename and line number in logs. It aims to simplify logging in Python applications by offering features such as log level configuration, colored logs, and conditional logging.
 
-[View the full documentation here](https://vulcan-logger.readthedocs.io/en/latest/)
+Vulcan Utils is a Python package designed to enhance the logging capabilities of Python applications. It simplifies the logging process by automatically including critical details like the caller's filename and line number, making it easier to trace the source of log entries. The package supports a range of features including customizable log levels, colored logs, and conditional logging, tailored to improve both the development and debugging processes.
+
+**Requires Python 3.9 or higher**
+
+[View the full technical documentation here](https://vulcan-logger.readthedocs.io/en/latest/)
+
+[View the PyPi project here](https://pypi.org/project/vulcan-utils/)
 
 ![Vulcan Utils](https://raw.githubusercontent.com/nodadyoushutup/vulcan-logger/main/docs/img/examples.png)
 
@@ -20,6 +26,8 @@ pip install vulcan-logger
 
 ## Usage
 [View example usage here](https://github.com/nodadyoushutup/vulcan-logger/blob/main/example/example.py)
+
+Below are examples of how to use the Vulcan Utils logging and decoration features.
 
 ### Basic Logging
 1. Import the Logger class from the `vulcan_utils.logger` module.
@@ -40,28 +48,68 @@ logger.error("Error message for serious problems")
 logger.critical("Critical message for severe conditions")
 ```
 
-### Function Logging with Decorators
-Vulcan Utils provides a logging decorator that can be applied to functions to automatically log calls, returns, and execution times. To use this feature:
+### Function Logging
+Vulcan Utils enhances function debugging and monitoring by providing a powerful logging decorator, `log`, which automatically records function calls, their returns, and execution times. This decorator is invaluable for tracing and understanding the flow of execution in complex applications, especially when troubleshooting or monitoring performance.
 
-1. Import the log decorator from the `vulcan_utils.decorator` module.
-2. Apply the @log decorator to any function. You can optionally specify a log level or a condition for logging.
+The log decorator can be configured with different log levels to control the verbosity of the logs generated. In the provided example, the first function logs all calls and returns at the `DEBUG` level, offering detailed insights suitable for in-depth debugging sessions.
+
+Additionally, the decorator supports conditional logging, where logs are generated only if a specified condition is met. This feature is demonstrated in the second function, where logging occurs only if the first argument is greater than the second. This selective logging helps in focusing on significant events, reducing log volume and making important information stand out.
+
+By decorating functions with log, developers can automatically generate detailed logs without manually inserting logging statements, making code cleaner and easier to maintain.
 
 ```python
-from vulcan_utils.decorator import log
+from vulcan_utils.decorator import Decorator
 
-@log(level="DEBUG")
-def compute_sum(a, b):
+@Decorator.log(level="DEBUG")
+def example_log(a, b):
     """Function to demonstrate logging with a decorator."""
     return a + b
 
-@log(condition=lambda args, kwargs: args[0] > args[1])
-def conditional_log_example(x, y):
+@Decorator.log(condition=lambda args, kwargs: args[0] > args[1])
+def example_conditional_log(x, y):
     """Function that logs only if the condition is true."""
     return x * y
 
 # Call the decorated functions
-sum_result = compute_sum(1, 2)
-product_result = conditional_log_example(5, 3)
+sum_result = example_log(1, 2)
+product_result = example_conditional_log(5, 3)
+```
+
+### Retry
+The `retry` decorator allows you to automatically retry executing a function if it raises an exception. The decorator can be customized with the number of retry attempts and the delay between retries. It can also call the function repeatedly indefinitely. This feature is especially useful in scenarios where operations might occasionally fail due to transient issues, such as network connectivity problems. In this example, the function attempts to divide two numbers and will retry up to three times with a one-second pause between attempts if an exception occurs.
+
+```python
+from vulcan_utils.decorator import Decorator
+
+@Decorator.retry(retries=3, delay=1)
+def example_retry(x, y):
+    """A function that retries upon failure, demonstrated with division."""
+    return x / y
+
+@Decorator.retry(infinite=True, delay=1)
+def example_retry_infinite(x, y):
+    """A function that retries upon failure indefinitely, demonstrated with division."""
+    return x / y
+```
+
+### JSON Serialization
+The `to_json` decorator automatically serializes the return value of the function into JSON format using a custom encoder. This decorator simplifies the process of converting Python objects into JSON strings, which is often required in web development and APIs for communicating between the server and client. The decorator will also convert non-standard custom objects to serialized JSON. The example provided demonstrates how to return a Python dictionary as a JSON-formatted string, making it a handy tool for data serialization tasks.
+
+```python
+@Decorator.to_json
+def example_to_json(data):
+    """A function that returns its result in JSON format."""
+    return {"data": data}
+```
+
+### Rate Limiting
+The `rate_limit` decorator is crucial for controlling the rate of operations to manage resource consumption or maintain service availability under high demand. The rate_limit decorator enforces a limit on how many times a function can be called within a specified time interval. In this example, the function can only be invoked three times per minute, which helps prevent excessive usage and ensures fair resource access when dealing with limited or shared resources.
+
+```python
+@Decorator.rate_limit(limit=3, interval=60)
+def example_rate_limit():
+    """A function that is rate limited."""
+    return "This function is rate-limited."
 ```
 
 ### Advanced Configuration
