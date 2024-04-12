@@ -1,4 +1,11 @@
 .. docs/source/vulcan_utils.rst
+vulcan_utils.cache
+=======================
+.. automodule:: vulcan_utils.cache
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 vulcan_utils.decorator
 =======================
