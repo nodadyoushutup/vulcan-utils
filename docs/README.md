@@ -12,10 +12,15 @@ Vulcan Utils is a Python package designed to enhance the logging capabilities of
 ![Vulcan Utils](https://raw.githubusercontent.com/nodadyoushutup/vulcan-logger/main/docs/img/examples.png)
 
 ## Features
-- **Caller Information**: Automatically includes the caller's filename and line number in log messages for better traceability.
-- **Customizable Log Levels**: Easily configure log levels to control the severity of messages that the logger will process.
-- **Colored Logs**: Enhance log readability with colored logs for different log levels.
-- **Conditional Logging**: Conditionally log messages based on specific conditions to control verbosity.
+- **Caller Information**: Vulcan Utils enriches every log entry with the caller's filename and line number, significantly easing the debugging process by providing immediate context for each message.
+- **Customizable Log Levels**: Flexibility is key with Vulcan Utils, allowing developers to configure log levels to match the operational needs of their applications, from DEBUG for thorough diagnostics to CRITICAL for monitoring urgent issues.
+- **Colored Logs**: To enhance readability and facilitate quicker log analysis, Vulcan Utils supports colored logging, distinguishing log levels with different colors.
+- **Conditional Logging**: This feature offers advanced control over logging operations, enabling logs to be generated based on dynamic runtime conditions, thereby keeping log files concise and focused.
+- **Function Decorators**: Vulcan Utils introduces function decorators for logging, retrying, JSON serialization, and rate limiting, each adding a layer of functionality that enhances method executions with minimal code intrusion.
+- **Advanced Retry Mechanisms**: The retry decorators provide robust error handling by allowing repeated execution of functions upon failure, customizable by attempts and delays, which is invaluable for dealing with transient system or network issues.
+- **Automatic JSON Serialization**: Simplify data interchange in API services and other integrations with automatic JSON serialization of function outputs, streamlining responses and reducing boilerplate code.
+- **Rate Limiting Controls**: Enforce execution limits on functions with the rate limit decorator to manage resource utilization effectively and prevent system overload, which is essential for maintaining service availability and performance under high load.
+
 
 ## Installation
 You can install Vulcan Utils via PIP:
@@ -25,14 +30,12 @@ pip install vulcan-logger
 ```
 
 ## Usage
-[View example usage here](https://github.com/nodadyoushutup/vulcan-logger/blob/main/example/example.py)
+[View example usage here](https://github.com/nodadyoushutup/vulcan-utils/blob/main/example.py)
 
 Below are examples of how to use the Vulcan Utils logging and decoration features.
 
 ### Basic Logging
-1. Import the Logger class from the `vulcan_utils.logger` module.
-2. Initialize a Logger instance with a name and an optional log level. The default log level is INFO.
-3. Use the logging methods (debug, info, warning, error, critical) to log messages at various severity levels.
+Vulcan Utils simplifies the logging setup with its customizable `Logger` class, allowing for detailed tracking and debugging across different levels of severity in Python applications. Upon initialization, the logger can be configured with a custom name and a desired log level, such as `DEBUG`, providing granular control over the information being logged. The logger supports various levels, including `debug`, `info`, `warning`, `error`, and `critical`, ensuring that developers can capture as much or as little information as they need depending on the environment and scenario.
 
 ```python
 from vulcan_utils.logger import Logger
@@ -96,6 +99,8 @@ def example_retry_infinite(x, y):
 The `to_json` decorator automatically serializes the return value of the function into JSON format using a custom encoder. This decorator simplifies the process of converting Python objects into JSON strings, which is often required in web development and APIs for communicating between the server and client. The decorator will also convert non-standard custom objects to serialized JSON. The example provided demonstrates how to return a Python dictionary as a JSON-formatted string, making it a handy tool for data serialization tasks.
 
 ```python
+from vulcan_utils.decorator import Decorator
+
 @Decorator.to_json
 def example_to_json(data):
     """A function that returns its result in JSON format."""
@@ -106,6 +111,8 @@ def example_to_json(data):
 The `rate_limit` decorator is crucial for controlling the rate of operations to manage resource consumption or maintain service availability under high demand. The rate_limit decorator enforces a limit on how many times a function can be called within a specified time interval. In this example, the function can only be invoked three times per minute, which helps prevent excessive usage and ensures fair resource access when dealing with limited or shared resources.
 
 ```python
+from vulcan_utils.decorator import Decorator
+
 @Decorator.rate_limit(limit=3, interval=60)
 def example_rate_limit():
     """A function that is rate limited."""
