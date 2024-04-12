@@ -4,8 +4,8 @@
     "config:recommended"
   ],
   "baseBranches": ["staging"],
-  "branchPrefix": "[DEP] ",
-  "commitMessagePrefix": "[DEP] ",
+  "branchPrefix": "VLOG-10 [DEP] ",
+  "commitMessagePrefix": "VLOG-10 [DEP] ",
   "assignees": ["nodadyoushutup"],
   "reviewers": ["nodadyoushutup"]
 }
