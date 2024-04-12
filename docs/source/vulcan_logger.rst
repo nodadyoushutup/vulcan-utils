@@ -8,6 +8,14 @@ vulcan_logger.decorator
    :show-inheritance:
 
 
+vulcan_logger.encoder
+=======================
+.. automodule:: vulcan_logger.encoder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 vulcan_logger.formatter
 =======================
 .. automodule:: vulcan_logger.formatter

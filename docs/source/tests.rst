@@ -16,9 +16,25 @@ tests.test_encoder
    :show-inheritance:
 
 
+tests.test_formatter
+====================
+.. automodule:: tests.test_formatter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 tests.test_logger
 ====================
 .. automodule:: tests.test_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+tests.test_printable
+====================
+.. automodule:: tests.test_printable
    :members:
    :undoc-members:
    :show-inheritance:
