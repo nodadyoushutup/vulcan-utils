@@ -1,4 +1,3 @@
----
 name: Unit Tests
 on:  # yamllint disable-line rule:truthy
   push:
