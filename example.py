@@ -44,11 +44,28 @@ def json_function(data):
     return {"data": data}
 
 
-# Reduced interval for demonstration
 @Decorator.rate_limit(limit=3, interval=5)
 def rate_limited_function():
     """A function that is rate limited."""
     return "This function is rate-limited."
+
+
+@Decorator.env(variable="VULCAN_LOG_LEVEL")
+def env_function_exists():
+    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set."""
+    return "Environment-specific function executed successfully."
+
+
+@Decorator.env(variable="VULCAN_LOG_LEVEL", value="DEBUG")
+def env_function_debug():
+    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 'DEBUG'."""
+    return "Environment-specific function executed successfully."
+
+
+@Decorator.env(variable="VULCAN_LOG_LEVEL", value="CRITICAL")
+def env_function_critical():
+    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 'CRITICAL'."""
+    return "Environment-specific function executed successfully."
 
 
 # Logging manual messages
@@ -68,17 +85,17 @@ formatted_duration = formatter.duration(
 logger.info(f"Formatted duration: {formatted_duration}")
 
 # Calling functions with decorators
-result = baseline_function(10, 2)
-result = level_function(10, 5)
-result = condition_function(3, 6)
-json_result = json_function({"hello": "world"})
-logger.info(f"JSON Output: {json_result}")
+baseline_function(10, 2)
+level_function(10, 5)
+condition_function(3, 6)
+json_function({"hello": "world"})
+env_function_exists()
+env_function_debug()
+env_function_critical()
 try:
-    result = retry_function(10, 0)
+    retry_function(1, 0)
 except ZeroDivisionError as e:
     logger.error(f"Caught an exception as expected: {e}")
-
-# Demonstrating rate limiting behavior
 for i in range(6):
     response = rate_limited_function()
     if response:

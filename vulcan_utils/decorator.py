@@ -1,5 +1,6 @@
 # vulcan_utils/decorator.py
 import json
+import os
 import time
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, Union
@@ -188,8 +189,15 @@ class Decorator:
         def decorator_to_json(func: F) -> F:
             @wraps(func)
             def wrapper(*args, **kwargs) -> str:
+                logger = Logger(func.__module__)
                 result = func(*args, **kwargs)
-                return json.dumps(result, cls=Encoder, ensure_ascii=False)
+                json_result = json.dumps(
+                    result,
+                    cls=Encoder,
+                    ensure_ascii=False
+                )
+                logger.debug(f"{func.__name__} JSON return: {json_result}")
+                return json_result
             return wrapper
         if _func is not None:
             return decorator_to_json(_func)
@@ -228,3 +236,40 @@ class Decorator:
                     return
             return wrapper
         return decorator
+
+    @classmethod
+    def env(cls, _func: Optional[F] = None, *, variable: str, value: Optional[str] = None) -> Union[Callable[[F], F], F]:
+        """
+        A decorator that restricts function execution based on the presence or value of an environment variable.
+
+        Args:
+            _func (Callable[..., Any], optional): The function to be decorated. If None, allows decorator to be used with arguments.
+            variable (str): The environment variable name to check.
+            value (str, optional): The specific value the environment variable must have for the function to execute.
+                If not specified, the existence of the variable is enough to allow execution.
+
+        Returns:
+            Callable[[F], F]: The decorated function, which will only execute if the conditions are met. Returns None if conditions are not met.
+        """
+
+        def decorator_env(func: F) -> F:
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                logger = Logger(func.__module__)
+                env_value = os.getenv(variable)
+                if env_value is not None:
+                    if value is None or env_value == value:
+                        logger.debug(
+                            f"{func.__name__} execution allowed: '{variable}' set to '{env_value}'.")
+                        return func(*args, **kwargs)
+                    else:
+                        logger.warning(
+                            f"{func.__name__} blocked: '{variable}' value '{env_value}' does not match required '{value}'.")
+                else:
+                    logger.warning(
+                        f"{func.__name__} blocked: Environment variable '{variable}' not set.")
+                return None
+            return wrapper
+        if _func is None:
+            return decorator_env
+        return decorator_env(_func)
