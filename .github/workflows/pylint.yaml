@@ -1,11 +1,9 @@
 name: Pylint
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    push:
+      branches: [ "main" ]
+    pull_request:
+      branches: "*"
 jobs:
   lint:
     runs-on: ubuntu-latest
