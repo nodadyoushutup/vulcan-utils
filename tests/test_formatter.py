@@ -1,5 +1,6 @@
 # tests/test_formatter.py
 import pytest
+
 from vulcan_utils.formatter import Formatter
 
 

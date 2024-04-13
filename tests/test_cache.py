@@ -1,9 +1,11 @@
 # test/test_cache.py
-import pytest
-from unittest.mock import MagicMock, patch
-from redis.exceptions import RedisError
-from vulcan_utils.cache import Cache
 import json
+from unittest.mock import MagicMock, patch
+
+import pytest
+from redis.exceptions import RedisError
+
+from vulcan_utils.cache import Cache
 
 
 @pytest.fixture
