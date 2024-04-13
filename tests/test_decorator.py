@@ -233,3 +233,55 @@ def test_rate_limit_reset():
         for _ in range(5):
             test_function()  # These should also pass after the reset
         assert mock_logger.return_value.error.call_count == 0
+
+
+def test_env_decorator_variable_exists():
+    """
+    Test that the env decorator allows function execution when the environment variable exists.
+    """
+    with patch.dict('os.environ', {'TEST_VAR': 'test_value'}):
+        @decorator.env(variable='TEST_VAR')
+        def sample_function():
+            return True
+
+        assert sample_function() is True, "Function should execute and return True."
+
+
+def test_env_decorator_variable_equals_value():
+    """
+    Test that the env decorator allows function execution when the environment variable equals the specified value.
+    """
+    with patch.dict('os.environ', {'TEST_VAR': 'specific_value'}):
+        @decorator.env(variable='TEST_VAR', value='specific_value')
+        def sample_function():
+            return True
+
+        assert sample_function() is True, "Function should execute and return True."
+
+
+def test_env_decorator_variable_not_equal_value():
+    """
+    Test that the env decorator blocks function execution when the environment variable does not equal the specified value.
+    """
+    with patch.dict('os.environ', {'TEST_VAR': 'other_value'}), patch('vulcan_utils.decorator.Logger') as mock_logger:
+        @decorator.env(variable='TEST_VAR', value='specific_value')
+        def sample_function():
+            return True
+
+        result = sample_function()
+        assert result is None, "Function should not execute."
+        mock_logger.return_value.warning.assert_called_once()
+
+
+def test_env_decorator_variable_not_present():
+    """
+    Test that the env decorator blocks function execution when the environment variable is not present.
+    """
+    with patch('vulcan_utils.decorator.Logger') as mock_logger:
+        @decorator.env(variable='MISSING_VAR')
+        def sample_function():
+            return True
+
+        result = sample_function()
+        assert result is None, "Function should not execute."
+        mock_logger.return_value.warning.assert_called_once()
