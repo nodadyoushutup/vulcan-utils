@@ -33,8 +33,8 @@ import time
 
 from vulcan_utils.cache import Cache
 from vulcan_utils.decorator import env, log, rate_limit, retry, to_json
-from vulcan_utils.logger import Logger
 from vulcan_utils.formatter import Formatter
+from vulcan_utils.logger import Logger
 
 os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"
 os.environ["VULCAN_LOG_PATH"] = "logs"

@@ -3,19 +3,8 @@ vulcan_utils/decorator.py
 
 This module provides decorators for logging, retrying, JSON serialization, rate limiting, 
 and environment variable restriction for function execution.
-
-Functions:
-- log: A decorator that logs function calls, returns, and execution time.
-- retry: A decorator to retry a function if it raises an exception.
-- to_json: A decorator that serializes the return value of a function to JSON.
-- rate_limit: A decorator to rate limit the execution of a function.
-- env: A decorator to restrict function execution based on environment variables.
-
-Classes:
-- Encoder: A custom JSON encoder.
-- Logger: A logger class for logging messages.
-
 """
+
 
 import json
 import os

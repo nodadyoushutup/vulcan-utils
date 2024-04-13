@@ -1,54 +1,51 @@
-# vulcan_utils/encoder.py
+"""
+vulcan_utils/encoder.py
+
+This module provides decorators for logging, retrying, JSON serialization, rate limiting, 
+and environment variable restriction for function execution.
+
+Classes:
+    - Encoder: A custom JSON encoder.
+"""
+
 import json
 import uuid
-from datetime import date, datetime
-from datetime import time as dt_time  # Alias for clarity
+from datetime import date, datetime, time
 from decimal import Decimal
 from enum import Enum
 from typing import Any
 
-try:
-    # Import numpy and pandas only if available
-    import numpy as np
-    import pandas as pd
-    HAS_NUMPY_PANDAS = True
-except ImportError:
-    HAS_NUMPY_PANDAS = False
-
 
 class Encoder(json.JSONEncoder):
-    def default(self, obj: Any) -> Any:
+    """
+    JSON encoder with custom serialization for specific types.
+    """
+
+    def default(self, o: Any) -> Any:
         """
         Override the default() method to serialize additional types.
 
         Args:
-            obj: The object to be serialized.
+            o: The object to be serialized.
 
         Returns:
             The serialized object, or calls the superclass's default method if the object
             does not match any known type.
         """
 
-        if isinstance(obj, datetime):
-            return obj.isoformat()
-        elif isinstance(obj, date):
-            return obj.isoformat()
-        elif isinstance(obj, dt_time):
-            return obj.isoformat()
-        elif isinstance(obj, Decimal):
-            return float(obj)
-        elif isinstance(obj, Enum):
-            return obj.value
-        elif isinstance(obj, uuid.UUID):
-            return str(obj)
-        elif HAS_NUMPY_PANDAS:
-            if isinstance(obj, np.ndarray):
-                return obj.tolist()
-            elif "pandas" in str(type(obj)):
-                return obj.to_dict(orient="records")
-        elif hasattr(obj, "__dict__"):
-            # Serialize objects by their dictionary representation, filtering out non-serializable attributes
-            return {key: self.default(value) for key, value in obj.__dict__.items()}
+        if isinstance(o, datetime):
+            return o.isoformat()
+        elif isinstance(o, date):
+            return o.isoformat()
+        elif isinstance(o, time):
+            return o.isoformat()
+        elif isinstance(o, Decimal):
+            return float(o)
+        elif isinstance(o, Enum):
+            return o.value
+        elif isinstance(o, uuid.UUID):
+            return str(o)
+        elif hasattr(o, "__dict__"):
+            return {key: self.default(value) for key, value in o.__dict__.items()}
         else:
-            # Skip serialization for other non-handled types
-            return str(obj)  # Fallback to a simple string representation
+            return str(o)

@@ -1,4 +1,13 @@
-# vulcan_utils/logger.py
+"""
+vulcan_utils/logger.py
+
+This module provides a customizable logging utility designed to enhance standard logging with
+additional features like automatic inclusion of caller context (filename and line number),
+colored console output, and optional file logging. It is tailored to simplify debugging and log
+analysis by providing more detailed contextual information.
+"""
+
+
 import inspect
 import logging
 import os
@@ -15,7 +24,10 @@ EXCLUDE = (
     '<frozen importlib._bootstrap>'
 )
 
-LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s - (%(caller_filename)s:%(caller_lineno)d)"
+LOG_FORMAT = (
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - "
+    "(%(caller_filename)s:%(caller_lineno)d)"
+)
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
@@ -27,10 +39,12 @@ class Logger:
     supports configuring different log levels, colored console output, and optional file logging.
 
     Attributes:
-        level (str): The log level as a string, determining the severity of messages to be processed.
-        file_name (str): The name of the file where logs will be written, if file logging is enabled.
-        path (Optional[str]): The directory path for the log file. If not specified, file logging may 
-            be disabled or use a default path.
+        level (str): The log level as a string, determining the severity of messages to be 
+            processed.
+        file_name (str): The name of the file where logs will be written, if file logging is 
+            enabled.
+        path (Optional[str]): The directory path for the log file. If not specified, file logging 
+            may be disabled or use a default path.
     """
 
     def __init__(
@@ -78,7 +92,6 @@ class Logger:
             Optional[str]: The determined path as a string, or None if no path is determined.
         """
 
-        # TODO: Validate path before returning it.
         env_log_path = os.environ.get("VULCAN_LOG_PATH")
         if path:
             return path
@@ -88,7 +101,8 @@ class Logger:
 
     def _level(self, level: Optional[str]) -> str:
         """
-        Determines the effective log level for the logger instance, based on direct input or environment variables.
+        Determines the effective log level for the logger instance, based on direct input or 
+            environment variables.
 
         Args:
             level (Optional[str]): A specified log level as a string.
@@ -97,7 +111,6 @@ class Logger:
             str: The determined log level as a string.
         """
 
-        # TODO: Validate level before returning it.
         env_log_level = os.environ.get("VULCAN_LOG_LEVEL")
         if level:
             return level.upper()
@@ -134,7 +147,7 @@ class Logger:
                 fmt=LOG_FORMAT,
                 datefmt=DATE_FORMAT
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             self.error(f"Error installing coloredlogs: {e}")
 
     def _file_handler(self) -> None:
@@ -153,28 +166,31 @@ class Logger:
                 )
                 file_handler.setFormatter(formatter)
                 self._logger.addHandler(file_handler)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             self.error(f"Error creating log file handler: {e}")
 
     def _setup(self) -> None:
         """
-        Sets up the logging format, date format, installs colored logs, and configures file logging if VULCAN_LOG_PATH is set.
+        Sets up the logging format, date format, installs colored logs, and configures file logging 
+            if VULCAN_LOG_PATH is set.
         """
 
         self._install_coloredlogs()
         if self.path:
             try:
                 self._file_handler()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 self.error(
                     f"Error setting up file handler for logger: {e}")
 
     def _stack_trace(self) -> dict:
         """
-        Generates a stack trace to identify the caller's filename and line number, excluding specified files and modules.
+        Generates a stack trace to identify the caller's filename and line number, excluding 
+            specified files and modules.
 
         Returns:
-            dict: A dictionary with keys 'caller_filename' and 'caller_lineno', representing the file and line number of the log call origin.
+            dict: A dictionary with keys 'caller_filename' and 'caller_lineno', representing the 
+                file and line number of the log call origin.
         """
 
         stack = inspect.stack()
@@ -190,10 +206,12 @@ class Logger:
 
     def _exc_info(self) -> tuple[Optional[type], Optional[BaseException], Optional[TracebackType]]:
         """
-        Checks if there is an exception being handled in the current context and returns a tuple of exception information.
+        Checks if there is an exception being handled in the current context and returns a tuple of 
+            exception information.
 
         Returns:
-            tuple[Optional[type], Optional[BaseException], Optional[TracebackType]]: A tuple containing exception type, exception instance, and traceback information.
+            tuple[Optional[type], Optional[BaseException], Optional[TracebackType]]: A tuple 
+                containing exception type, exception instance, and traceback information.
         """
         exc_info = sys.exc_info()
         if exc_info:
@@ -202,10 +220,12 @@ class Logger:
 
     def _base(self, func: Callable[[str, dict, bool], None], message: str) -> None:
         """
-        A base logging function that enriches log messages with caller details and conditional exception information.
+        A base logging function that enriches log messages with caller details and conditional 
+            exception information.
 
         Args:
-            func (Callable[[str, dict, bool], None]): A logging function (e.g., self._logger.debug) to be invoked with enriched logging information.
+            func (Callable[[str, dict, bool], None]): A logging function (e.g., self._logger.debug) 
+                to be invoked with enriched logging information.
             message (str): The log message.
         """
 

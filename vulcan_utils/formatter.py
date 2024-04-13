@@ -1,4 +1,19 @@
-# vulcan_utils/formatter.py
+"""
+vulcan_utils/formatter.py
+
+This module provides the Formatter class, which handles conversion of milliseconds to human-readable 
+formats. Supports list, string w/custom delimiters, or dictionary format expressing years, months, 
+weeks, days, hours, minutes, seconds, and milliseconds.
+
+Classes:
+    Formatter: Formats durations from milliseconds into lists, strings, or dictionaries.
+
+Constants:
+    MS_IN_SECOND, MS_IN_MINUTE, MS_IN_HOUR, MS_IN_DAY, MS_IN_WEEK, MS_IN_MONTH, MS_IN_YEAR: 
+        Constants representing milliseconds in each respective time unit.
+"""
+
+
 MS_IN_SECOND = 1000
 MS_IN_MINUTE = 60 * MS_IN_SECOND
 MS_IN_HOUR = 60 * MS_IN_MINUTE
@@ -49,7 +64,8 @@ class Formatter:
             milliseconds (int): Duration in milliseconds.
 
         Returns:
-            tuple: A tuple containing years, months, weeks, days, hours, minutes, seconds, milliseconds.
+            tuple: A tuple containing years, months, weeks, days, hours, minutes, seconds, 
+                milliseconds.
         """
 
         years = milliseconds // MS_IN_YEAR
