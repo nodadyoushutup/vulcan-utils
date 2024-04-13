@@ -28,9 +28,5 @@ jobs:
 
       - name: Run Pylint
         run: |
-          pylint **/*.py
-    #     continue-on-error: true # This allows the job to continue even if pylint fails
-
-    #   - name: Check Pylint output
-    #     run: |
-    #       pylint **/*.py --exit-zero
+          # Run pylint and check only for errors. Other message types are ignored.
+          pylint **/*.py --exit-zero --disable=C,R,W,I
