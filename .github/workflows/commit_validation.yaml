@@ -1,19 +1,15 @@
 name: Commit Validation
-
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
-
 jobs:
-  commit-naming-convention:
+  commit-naming-validation:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
     - name: Check commit format
       uses: actions/github-script@v7
       with:
