@@ -1,6 +1,6 @@
-# .github/workflows/publish_pypi.yml
+---
 name: Publish to PyPi
-on:
+on:  # yamllint disable-line rule:truthy
   workflow_run:
     workflows: ["Unit Tests"]
     branches: [main]
@@ -22,18 +22,18 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - uses: actions/checkout@v4
-      name: Check out source code
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install setuptools wheel twine
-    - name: Build and check the package
-      run: |
-        export TWINE_PASSWORD=${{secrets.PYPI_API_TOKEN}}
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
+      - uses: actions/checkout@v4
+        name: Check out source code
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: Build and check the package
+        run: |
+          export TWINE_PASSWORD=${{secrets.PYPI_API_TOKEN}}
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
