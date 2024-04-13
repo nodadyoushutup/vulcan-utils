@@ -1,70 +1,101 @@
-# # example.py
+"""
+Example
+
+This module provides a collection of functions and utilities for demonstration purposes. 
+It includes functions for logging at different levels, retrying operations upon failure, 
+rate-limiting function calls, working with environment variables, formatting durations, 
+and using caching mechanisms.
+
+Functions:
+- baseline_function: A simple function demonstrating baseline logging.
+- level_function: A function demonstrating logging at a specific level.
+- condition_function: A function demonstrating conditional logging.
+- retry_function: A function that retries upon failure.
+- json_function: A function that returns its result in JSON format.
+- rate_limited_function: A function that is rate-limited.
+- env_function_exists: A function that only executes if a specific environment variable is set.
+- env_function_debug: A function that only executes if a specific environment variable is set to 
+    'DEBUG'.
+- env_function_critical: A function that only executes if a specific environment variable is set 
+    to 'CRITICAL'.
+
+Logging Levels:
+- DEBUG: Detailed information, typically of interest only when diagnosing problems.
+- INFO: Confirmation that things are working as expected.
+- WARNING: Indication that something unexpected happened or indicative of some problem in the near 
+    future.
+- ERROR: Due to a more serious problem, the software has not been able to perform some function.
+- CRITICAL: A serious error, indicating that the program itself may be unable to continue running.
+"""
+
 import os
 import time
 
 from vulcan_utils.cache import Cache
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import env, log, rate_limit, retry, to_json
 from vulcan_utils.logger import Logger
 from vulcan_utils.formatter import Formatter
 
-os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"  # Global log level filter
-os.environ["VULCAN_LOG_PATH"] = "logs"  # Path for log files
-os.environ["VULCAN_LOG_NAME"] = "example"  # Log file name
+os.environ["VULCAN_LOG_LEVEL"] = "DEBUG"
+os.environ["VULCAN_LOG_PATH"] = "logs"
+os.environ["VULCAN_LOG_NAME"] = "example"
 
 logger = Logger(__name__)
 
 
-@Decorator.log
+@log
 def baseline_function(x, y):
     """A simple function to demonstrate baseline logging."""
     return x / y
 
 
-@Decorator.log(level="WARNING")
+@log(level="WARNING")
 def level_function(x, y):
     """A function to demonstrate specific level logging."""
     return x + y
 
 
-@Decorator.log(condition=True)
+@log(condition=True)
 def condition_function(x, y):
     """A function to demonstrate conditional logging."""
     return x + y
 
 
-@Decorator.retry(retries=3, delay=1)
+@retry(retries=3, delay=1)
 def retry_function(x, y):
     """A function that retries upon failure, demonstrated with division."""
     return x / y
 
 
-@Decorator.to_json
+@to_json
 def json_function(data):
     """A function that returns its result in JSON format."""
     return {"data": data}
 
 
-@Decorator.rate_limit(limit=3, interval=5)
+@rate_limit(limit=3, interval=5)
 def rate_limited_function():
     """A function that is rate limited."""
     return "This function is rate-limited."
 
 
-@Decorator.env(variable="VULCAN_LOG_LEVEL")
+@env(variable="VULCAN_LOG_LEVEL")
 def env_function_exists():
     """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set."""
     return "Environment-specific function executed successfully."
 
 
-@Decorator.env(variable="VULCAN_LOG_LEVEL", value="DEBUG")
+@env(variable="VULCAN_LOG_LEVEL", value="DEBUG")
 def env_function_debug():
-    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 'DEBUG'."""
+    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 
+        'DEBUG'."""
     return "Environment-specific function executed successfully."
 
 
-@Decorator.env(variable="VULCAN_LOG_LEVEL", value="CRITICAL")
+@env(variable="VULCAN_LOG_LEVEL", value="CRITICAL")
 def env_function_critical():
-    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 'CRITICAL'."""
+    """A function that only executes if the 'VULCAN_LOG_LEVEL' environment variable is set to 
+        'CRITICAL'."""
     return "Environment-specific function executed successfully."
 
 
@@ -97,8 +128,8 @@ try:
 except ZeroDivisionError as e:
     logger.error(f"Caught an exception as expected: {e}")
 for i in range(6):
-    response = rate_limited_function()
-    if response:
+    RESPONSE = rate_limited_function()
+    if RESPONSE:
         logger.info(f"Call {i + 1}: Success")
     time.sleep(1)
 
