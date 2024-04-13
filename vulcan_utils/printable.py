@@ -1,4 +1,15 @@
-# vulcan_utils/printable.py
+"""
+vulcan_utils/printable.py
+
+This module defines the Printable class, a mixin that enhances any class with
+automatic, detailed string representations of its instances. By inheriting from
+Printable, other classes can provide meaningful __str__ and __repr__ methods
+without additional coding. These methods generate string outputs that include
+all instance variables, making it easier to visualize object states during
+debugging and logging.
+"""
+
+
 class Printable:
     """
     A mixin class that provides a default implementation for printable representations

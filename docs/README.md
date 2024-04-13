@@ -1,7 +1,7 @@
 <!-- docs/README.md -->
 # Vulcan Utils
 
-Vulcan Utils is a Python package designed to enhance the logging capabilities of Python applications. It simplifies the logging process by automatically including critical details like the caller's filename and line number, making it easier to trace the source of log entries. The package supports a range of features including customizable log levels, colored logs, and conditional logging, tailored to improve both the development and debugging processes.
+Vulcan Utils is a Python package designed to enhance the functionality of Python applications through advanced logging and function decorators. It simplifies the integration of complex behaviors like logging, retry mechanisms, and rate limiting into applications with minimal code changes. Its robust features make it an ideal choice for developers looking to add sophisticated capabilities to their applications efficiently.
 
 **Requires Python 3.9 or higher**
 
@@ -21,6 +21,7 @@ Vulcan Utils is a Python package designed to enhance the logging capabilities of
 - **Automatic JSON Serialization**: Simplify data interchange in API services and other integrations with automatic JSON serialization of function outputs, streamlining responses and reducing boilerplate code.
 - **Rate Limiting Controls**: Enforce execution limits on functions with the rate limit decorator to manage resource utilization effectively and prevent system overload, which is essential for maintaining service availability and performance under high load.
 - **Caching**: Easy to use interface to connect with a Redis database, store, and retrieve data.
+- **Environment Variable Checks**: Function execution can be controlled based on the presence or specific values of environment variables, improving security and configuration flexibility.
 
 
 ## Installation
@@ -170,6 +171,18 @@ Clear all keys and values in the currently selected Redis database.
 
 ```python
 cache.clear()
+```
+
+### Environment variable checks
+Vulcan Utils now includes a decorator that enables function execution based on the presence or value of environment variables. This feature enhances security and configuration flexibility by allowing functions to run only when certain environmental conditions are met.
+
+```python
+from vulcan_utils.decorator import Decorator
+
+@Decorator.env(variable="CONFIG_MODE", value="production")
+def sensitive_operation():
+    """ Perform operations that are only safe in production environment """
+    pass
 ```
 
 ### Advanced Configuration

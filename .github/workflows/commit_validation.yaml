@@ -1,40 +1,36 @@
+---
 name: Commit Validation
-
-on:
+on:  # yamllint disable-line rule:truthy
   pull_request:
     types: [opened, reopened, edited, synchronize]
-
 jobs:
-  commit-naming-convention:
+  commit-naming-validation:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Check commit format
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const commits = await github.rest.pulls.listCommits({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.issue.number
-          });
-          
-          const commitRegex = /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL|DEP|WIP)\] .*/;
-          const invalidCommits = commits.data.filter(commit => 
-            !commit.commit.message.startsWith("Merge ") &&
-            !commitRegex.test(commit.commit.message)
-          );
-
-          if (invalidCommits.length > 0) {
-            console.error('Some commit messages are invalid:');
-            invalidCommits.forEach(commit => {
-              console.error(`- ${commit.commit.message}`);
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check commit format
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: >
+            const commits = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
             });
-            process.exit(1);
-          }
+            const commitRegex =
+              /^[A-Z]+-\d+ \[(ADD|DEL|FIX|IMP|REF|DOC|REL|DEP|WIP|REV)\] .*/;
+            const invalidCommits = commits.data.filter(commit =>
+              !commit.commit.message.startsWith("Merge ") &&
+              !commitRegex.test(commit.commit.message)
+            );
+            if (invalidCommits.length > 0) {
+              console.error('Some commit messages are invalid:');
+              invalidCommits.forEach(commit => {
+                console.error(`- ${commit.commit.message}`);
+              });
+              process.exit(1);
+            }
