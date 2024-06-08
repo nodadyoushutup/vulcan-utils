@@ -11,7 +11,7 @@ with open("docs/README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="vulcan-utils",
-    version="1.12.3",
+    version="1.12.4",
     description="A utility package for Python",
     packages=find_packages(),
     install_requires=[
