@@ -63,14 +63,14 @@ Additionally, the decorator supports conditional logging, where logs are generat
 By decorating functions with log, developers can automatically generate detailed logs without manually inserting logging statements, making code cleaner and easier to maintain.
 
 ```python
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import log
 
-@Decorator.log(level="DEBUG")
+@log(level="DEBUG")
 def example_log(a, b):
     """Function to demonstrate logging with a decorator."""
     return a + b
 
-@Decorator.log(condition=lambda args, kwargs: args[0] > args[1])
+@log(condition=lambda args, kwargs: args[0] > args[1])
 def example_conditional_log(x, y):
     """Function that logs only if the condition is true."""
     return x * y
@@ -84,14 +84,14 @@ product_result = example_conditional_log(5, 3)
 The `retry` decorator allows you to automatically retry executing a function if it raises an exception. The decorator can be customized with the number of retry attempts and the delay between retries. It can also call the function repeatedly indefinitely. This feature is especially useful in scenarios where operations might occasionally fail due to transient issues, such as network connectivity problems. In this example, the function attempts to divide two numbers and will retry up to three times with a one-second pause between attempts if an exception occurs.
 
 ```python
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import retry
 
-@Decorator.retry(retries=3, delay=1)
+@retry(retries=3, delay=1)
 def example_retry(x, y):
     """A function that retries upon failure, demonstrated with division."""
     return x / y
 
-@Decorator.retry(infinite=True, delay=1)
+@retry(infinite=True, delay=1)
 def example_retry_infinite(x, y):
     """A function that retries upon failure indefinitely, demonstrated with division."""
     return x / y
@@ -101,9 +101,9 @@ def example_retry_infinite(x, y):
 The `to_json` decorator automatically serializes the return value of the function into JSON format using a custom encoder. This decorator simplifies the process of converting Python objects into JSON strings, which is often required in web development and APIs for communicating between the server and client. The decorator will also convert non-standard custom objects to serialized JSON. The example provided demonstrates how to return a Python dictionary as a JSON-formatted string, making it a handy tool for data serialization tasks.
 
 ```python
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import to_json
 
-@Decorator.to_json
+@to_json
 def example_to_json(data):
     """A function that returns its result in JSON format."""
     return {"data": data}
@@ -113,9 +113,9 @@ def example_to_json(data):
 The `rate_limit` decorator is crucial for controlling the rate of operations to manage resource consumption or maintain service availability under high demand. The rate_limit decorator enforces a limit on how many times a function can be called within a specified time interval. In this example, the function can only be invoked three times per minute, which helps prevent excessive usage and ensures fair resource access when dealing with limited or shared resources.
 
 ```python
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import rate_limit
 
-@Decorator.rate_limit(limit=3, interval=60)
+@rate_limit(limit=3, interval=60)
 def example_rate_limit():
     """A function that is rate limited."""
     return "This function is rate-limited."
@@ -177,9 +177,9 @@ cache.clear()
 Vulcan Utils now includes a decorator that enables function execution based on the presence or value of environment variables. This feature enhances security and configuration flexibility by allowing functions to run only when certain environmental conditions are met.
 
 ```python
-from vulcan_utils.decorator import Decorator
+from vulcan_utils.decorator import env
 
-@Decorator.env(variable="CONFIG_MODE", value="production")
+@env(variable="CONFIG_MODE", value="production")
 def sensitive_operation():
     """ Perform operations that are only safe in production environment """
     pass
